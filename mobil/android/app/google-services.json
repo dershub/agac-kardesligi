@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "804083751722",
+    "project_id": "agackardesligi",
+    "storage_bucket": "agackardesligi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804083751722:android:a68562d86247bdde9d5c53",
+        "android_client_info": {
+          "package_name": "com.dershub.agackardesligi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804083751722-u8tr000lnbg0ls09u211pf597lhsun4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuFN1mssQ8ewAYk9vLTl65ehlScps_f_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804083751722-u8tr000lnbg0ls09u211pf597lhsun4j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "804083751722-batgmqd0b2pvaft9hhjfg0ekn7bvtk26.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dh.agackardesligi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804083751722:android:4a18e4cf9b67cc1a9d5c53",
+        "android_client_info": {
+          "package_name": "com.dh.agackardesligi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804083751722-u8tr000lnbg0ls09u211pf597lhsun4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuFN1mssQ8ewAYk9vLTl65ehlScps_f_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804083751722-u8tr000lnbg0ls09u211pf597lhsun4j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "804083751722-batgmqd0b2pvaft9hhjfg0ekn7bvtk26.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dh.agackardesligi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

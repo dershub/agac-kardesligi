@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>804083751722-ten8g226176052p86aceod0rb2o7qs3r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.804083751722-ten8g226176052p86aceod0rb2o7qs3r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBTx6zbvaVvndZDTLKmCyY2aQ8DN_Dg9aQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>804083751722</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dershub.agackardesligi</string>
+	<key>PROJECT_ID</key>
+	<string>agackardesligi</string>
+	<key>STORAGE_BUCKET</key>
+	<string>agackardesligi.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:804083751722:ios:b8569c7047e2e8399d5c53</string>
+</dict>
+</plist>
