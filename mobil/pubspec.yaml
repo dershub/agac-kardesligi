@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   auth_buttons: ^0.0.5
+  cloud_firestore: ^0.16.0
+  dotted_border: ^1.0.7
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
   google_sign_in: ^4.5.9
