@@ -1,5 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../ui/safe_arka.dart';
 
@@ -17,6 +19,18 @@ class BitkiEkle extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
+          /* actions: [
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                if ((await GoogleSignIn().isSignedIn())) {
+                  await GoogleSignIn().signOut();
+                  await GoogleSignIn().disconnect();
+                }
+                await FirebaseAuth.instance.signOut();
+              },
+            ),
+          ], */
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
