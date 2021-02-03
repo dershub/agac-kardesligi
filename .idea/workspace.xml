@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4e8e6cce-561d-4231-a1ce-8751425f9f1a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/gerecler/renkler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/gerecler/renkler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/anasayfa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/anasayfa.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/bitki_ekle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/bitki_ekle.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/giris_yap.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/giris_yap.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/pubspec.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1nwdfh1QebF85Dun9koouO58JD2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../agacim" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4e8e6cce-561d-4231-a1ce-8751425f9f1a" name="Default Changelist" comment="" />
+      <created>1612305191483</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612305191483</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612305225694">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1612305225694" />
+    <state x="463" y="125" key="FileChooserDialogImpl" timestamp="1612306319140">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1612306319140" />
+  </component>
+</project>

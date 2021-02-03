@@ -1,8 +1,8 @@
 import 'package:auth_buttons/auth_buttons.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Relative (göreceli) path
 import '../gerecler/renkler.dart';
@@ -24,11 +24,11 @@ class _GirisYapState extends State<GirisYap> {
       }
       final GoogleSignInAccount googleHesabi = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleDogrulama =
-          await googleHesabi.authentication;
+      await googleHesabi.authentication;
 
       // Create a new credential
       final GoogleAuthCredential kimlikBilgileri =
-          GoogleAuthProvider.credential(
+      GoogleAuthProvider.credential(
         accessToken: googleDogrulama.accessToken,
         idToken: googleDogrulama.idToken,
       );
