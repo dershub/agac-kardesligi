@@ -1,21 +1,15 @@
 import 'package:agackardesligi/gerecler/renkler.dart';
-import 'package:agackardesligi/gerecler/resim_yollari.dart';
 import 'package:flutter/material.dart';
 
 //1- Paylasim ArkaPlan Container
-Widget paylasimArkaPlan({Widget resim, altSatir}){
+Widget paylasimArkaPlan({Widget resim, altSatir}) {
   return Container(
-    margin: EdgeInsets.only(left:15, right: 15 ),
+    margin: EdgeInsets.only(left: 15, right: 15),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Renk.mintYesil
-    ),
+        borderRadius: BorderRadius.circular(20), color: Renk.mintYesil),
     child: Column(
-      children: [
-        resim,
-        altSatir
-      ],
-    )
+      children: [resim, altSatir],
+    ),
   );
 }
 
@@ -26,9 +20,7 @@ Widget paylasimResim({Widget child}) {
     alignment: Alignment.bottomLeft,
     height: 150,
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Renk.koyuGri
-    ),
+        borderRadius: BorderRadius.circular(20), color: Renk.koyuGri),
     child: child,
   );
 }
@@ -39,47 +31,67 @@ Widget paylasimEtiket({String etiket}) {
     margin: EdgeInsets.all(10),
     padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Renk.koyuYesil
+        borderRadius: BorderRadius.circular(15), color: Renk.koyuYesil),
+    child: Text(
+      etiket,
+      style: TextStyle(fontSize: 14, color: Colors.white),
     ),
-    child: Text(etiket,style: TextStyle(fontSize: 14,color: Colors.white),),
   );
 }
 
 //4-Paylasim Alt Satır
-Widget paylasimAltRow({String photoUrl,kullaniciAdi,dikilen, int begeniSayisi }) {
+Widget paylasimAltRow(
+    {String photoUrl, kullaniciAdi, dikilen, int begeniSayisi}) {
   return Padding(
     padding: EdgeInsets.only(top: 15, bottom: 15, right: 15),
     child: Row(
       children: [
-        Expanded(child: CircleAvatar(child: Image.asset(photoUrl),),),
-        Expanded(flex:2, child: RichText(
-          text: TextSpan(
-            text: "$kullaniciAdi, ",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: <TextSpan>[
-              TextSpan(text: dikilen, style: TextStyle(color: Renk.ustBilgiYesilYazi, fontWeight: FontWeight.bold)),
-              TextSpan(text: " dikti."),
-            ],
+        Expanded(
+          child: CircleAvatar(
+            child: Image.asset(photoUrl),
           ),
-        ),),
-        Expanded(child: Padding(
+        ),
+        Expanded(
+          flex: 2,
+          child: RichText(
+            text: TextSpan(
+              text: "$kullaniciAdi, ",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              children: <TextSpan>[
+                TextSpan(
+                    text: dikilen,
+                    style: TextStyle(
+                        color: Renk.ustBilgiYesilYazi,
+                        fontWeight: FontWeight.bold)),
+                TextSpan(text: " dikti."),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
             padding: const EdgeInsets.only(right: 5.0),
-            child: Text("$begeniSayisi",
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                    color: Renk.ustBilgiYesilYazi.withOpacity(0.8)
-                ))
-        )),
-
+            child: Text(
+              "$begeniSayisi",
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: Renk.ustBilgiYesilYazi.withOpacity(0.8),
+              ),
+            ),
+          ),
+        ),
         CircleAvatar(
           backgroundColor: Renk.ustBilgiYesilYazi,
-          child: Icon(Icons.favorite, color: Colors.white,),),
+          child: Icon(
+            Icons.favorite,
+            color: Colors.white,
+          ),
+        ),
       ],
     ),
   );
 }
-
 
 //Örnet kullanım
 /*   paylasimArkaPlan(

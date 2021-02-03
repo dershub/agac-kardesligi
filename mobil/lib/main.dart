@@ -1,10 +1,8 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'sayfalar/anasayfa.dart';
-import 'sayfalar/bitki_ekle.dart';
 
 void main() async {
   // Widgetları ekrana getirmeye hazır olduğumuzdan emin oluyoruz
@@ -21,7 +19,6 @@ class Baslangic extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       home: Scaffold(
         body: FutureBuilder(
           future: Future.microtask(() async {
@@ -30,7 +27,7 @@ class Baslangic extends StatelessWidget {
           }),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return BitkiEkle();
+              return Anasayfa();
             }
             return Center(child: CircularProgressIndicator());
           },

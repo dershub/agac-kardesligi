@@ -1,35 +1,48 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:agackardesligi/gerecler/renkler.dart';
 
 // 1- Container alt taraf arka planı
-Widget contAltArkaPlan ({Widget child}){
+Widget contAltArkaPlan({Widget child}) {
   return Container(
-      decoration: BoxDecoration(
+    decoration: BoxDecoration(
       color: Renk.mintYesil,
-      borderRadius: BorderRadius.circular(20)
-  ),
-  child: child);
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: child,
+  );
 }
 
 //2- Container alt taraf 1 satır. diğer satırlar column içinde bu satırdan türetilecek.
 Widget contAltRow(IconData icon, String text, Widget child) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(icon, color: Renk.yaziKoyuYesil, size: 40,),
+  return Padding(
+    padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
+    child: Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Icon(
+            icon,
+            color: Renk.yaziKoyuYesil,
+            size: 40,
           ),
-          Expanded(flex: 3,child: Text(text, style: TextStyle(fontSize: 20, color: Renk.yaziKoyuYesil, fontWeight: FontWeight.bold),)),
-          Expanded(flex: 1,child: Center(child: child))
-        ],
-      ),
-    );
-  }
-
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 20,
+              color: Renk.yaziKoyuYesil,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Expanded(flex: 1, child: Center(child: child))
+      ],
+    ),
+  );
+}
 
 //1- Örnek Kullanım
 /* contAltArkaPlan(
@@ -54,4 +67,3 @@ Widget contAltRow(IconData icon, String text, Widget child) {
        Divider(color: Colors.white,thickness: 3,),
        contAltRow(Icons.autorenew, "Tekrarla", Text("Haftalık",style: TextStyle(fontSize: 20, color: Renk.yaziKoyuYesil, fontWeight: FontWeight.bold))),
 ],),*/
-

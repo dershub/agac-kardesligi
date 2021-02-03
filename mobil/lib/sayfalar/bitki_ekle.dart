@@ -1,13 +1,10 @@
-
-import 'package:agackardesligi/gerecler/resim_yollari.dart';
-import 'package:agackardesligi/ui/paylasim_sayfasi/paylasim_body/paylasim_arka_plan.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-import '../ui/safe_arka.dart';
 import '../gerecler/renkler.dart';
+import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
+import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
+import '../ui/safe_arka.dart';
 
 class BitkiEkle extends StatelessWidget {
   @override
@@ -60,16 +57,101 @@ class BitkiEkle extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(width: 8),
                   Expanded(
                     flex: 3,
-                    child: Container(
-                      color: Colors.blueAccent,
-                      child: Center(),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Buraya adını giriniz",
+                            ),
+                          ),
+                          StatefulBuilder(builder: (ctx, setstate) {
+                            return Expanded(
+                              child: EvreSecimi(),
+                            );
+                          }),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-           ],
+              SizedBox(height: 8),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Renk.acikGri,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Buraya açıklama giriniz",
+                            hintStyle: TextStyle(color: Renk.koyuGri),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      contAltArkaPlan(
+                        child: Column(
+                          children: [
+                            contAltRow(
+                              Icons.watch_later_outlined,
+                              "Saat",
+                              Text(
+                                "18:00",
+                                style: TextStyle(
+                                  color: Renk.yaziKoyuYesil,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              thickness: 3,
+                            ),
+                            contAltRow(
+                              Icons.add_alarm_outlined,
+                              "Uyarı",
+                              Icon(
+                                Icons.check_circle,
+                                color: Renk.yaziKoyuYesil,
+                              ),
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              thickness: 3,
+                            ),
+                            contAltRow(
+                              Icons.autorenew,
+                              "Tekrarla",
+                              Text(
+                                "Haftalık",
+                                style: TextStyle(
+                                  color: Renk.yaziKoyuYesil,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {},
+                child: Text("Paylaş"),
+              ),
+            ],
           ),
         ),
       ),
