@@ -1,7 +1,11 @@
+
+import 'package:agackardesligi/gerecler/resim_yollari.dart';
+import 'package:agackardesligi/ui/paylasim_sayfasi/paylasim_body/paylasim_arka_plan.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import '../ui/safe_arka.dart';
+import '../gerecler/renkler.dart';
 
 class BitkiEkle extends StatelessWidget {
   @override
@@ -35,7 +39,7 @@ class BitkiEkle extends StatelessWidget {
                         radius: Radius.circular(18),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Color(0xFFECECEC),
+                            color: Renk.acikGri,
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
@@ -51,7 +55,7 @@ class BitkiEkle extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
+           ],
           ),
         ),
       ),
