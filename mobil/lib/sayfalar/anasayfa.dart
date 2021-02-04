@@ -34,25 +34,7 @@ class Anasayfa extends StatelessWidget {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if (FirebaseAuth.instance.currentUser.isAnonymous)
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (c) => GirisYap(),
-                ),
-              );
-            else
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (c) => BitkiEkle(),
-                ),
-              );
-          },
-          child: Icon(Icons.add),
-        ),
+       
       ),
     );
   }

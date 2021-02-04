@@ -28,7 +28,12 @@ dependencies:
   dotted_border: ^1.0.7
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
+  font_awesome_flutter: ^8.11.0
   google_sign_in: ^4.5.9
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
+  hive_listener: ^0.1.0
+  path_provider: ^1.6.27
 
 #dev dependencies
 dev_dependencies:
