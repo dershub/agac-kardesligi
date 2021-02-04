@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Bottombar extends StatefulWidget {
   @override
   _BottombarState createState() => _BottombarState();
@@ -80,7 +82,7 @@ class _BottombarState extends State<Bottombar> {
         height: 64,
         child: Center(
           child: Image.asset(
-            "assets/images/plus.png",
+            "assets/images/profil.png",
             width: 24,
             height: 24,
           ),

@@ -1,3 +1,4 @@
+import 'package:agackardesligi/ui/bitki_ekle/bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +53,12 @@ class Anasayfa extends StatelessWidget {
               );
           },
           child: Icon(Icons.add),
+        ),
+        bottomNavigationBar: SizedBox(
+          height: 80,
+          child: Center(
+            child: Bottombar(),
+          ),
         ),
       ),
     );
