@@ -148,7 +148,7 @@ class _MainSayfaState extends State<MainSayfa> {
                       ),
                     ),
                   ),
-                ],
+                ], 
               ),
             )
           : Container(
@@ -157,7 +157,7 @@ class _MainSayfaState extends State<MainSayfa> {
                 color: Renk.beyaz,
                 borderRadius: BorderRadius.circular(40.0),
                 boxShadow: [
-                  BoxShadow(
+                  BoxShadow(   
                     color: Renk.yesil99.withOpacity(0.5),
                     spreadRadius: 7,
                     blurRadius: 50,
