@@ -90,7 +90,7 @@ class _GirisYapState extends State<GirisYap> {
                   Center(
                     child: Text(
                       "Hesabınızla giriş yapın.",
-                      style: TextStyle(color: Renk.yesilYazi),
+                      style: TextStyle(color: Renk.yesil99),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -104,7 +104,7 @@ class _GirisYapState extends State<GirisYap> {
                   Center(
                     child: Text(
                       "Hesabınız yoksa buradan kayıt olun.",
-                      style: TextStyle(color: Renk.yesilYazi),
+                      style: TextStyle(color: Renk.yesil99),
                     ),
                   ),
                 ],
