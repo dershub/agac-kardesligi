@@ -1,12 +1,33 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../gerecler/renkler.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
 import '../ui/safe_arka.dart';
 
-class BitkiEkle extends StatelessWidget {
+class BitkiEkle extends StatefulWidget {
+  @override
+  _BitkiEkleState createState() => _BitkiEkleState();
+}
+
+class _BitkiEkleState extends State<BitkiEkle> {
+  File _resim;
+  Future<void> _resimSec() async {
+    PickedFile secilenResim =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+
+    if (secilenResim != null)
+      _resim = File(secilenResim.path);
+    else
+      _resim = null;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArka(
@@ -43,17 +64,43 @@ class BitkiEkle extends StatelessWidget {
                     flex: 1,
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: DottedBorder(
-                        color: Colors.black26,
-                        strokeWidth: 2,
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(18),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Renk.acikGri,
-                            borderRadius: BorderRadius.circular(18),
+                      child: Stack(
+                        children: [
+                          DottedBorder(
+                            color: Colors.black26,
+                            strokeWidth: 2,
+                            borderType: BorderType.RRect,
+                            radius: Radius.circular(18),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Renk.acikGri,
+                                borderRadius: BorderRadius.circular(18),
+                                image: _resim == null
+                                    ? null
+                                    : DecorationImage(
+                                        image: FileImage(_resim),
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                              child: FlatButton(
+                                onPressed: _resimSec,
+                                child: Center(),
+                              ),
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: InkWell(
+                              onTap: _resimSec,
+                              child: Icon(
+                                Icons.add_circle,
+                                color: Renk.yesil99,
+                                size: 36,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -41,6 +41,10 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Uygulamaya resim yükleyebilmek için galeri erişim izni vermeniz gerekiyor</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Uygulamaya resim yükleyebilmek için kamera erişim izni vermeniz gerekiyor</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

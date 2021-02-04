@@ -1,4 +1,3 @@
-import 'package:agackardesligi/ui/bitki_ekle/bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -6,8 +5,6 @@ import '../gerecler/resim_yollari.dart';
 import '../ui/paylasim_sayfasi/paylasim_body/paylasim_arka_plan.dart';
 import '../ui/paylasim_sayfasi/paylasim_ust/ust_bilgi.dart';
 import '../ui/safe_arka.dart';
-import 'bitki_ekle.dart';
-import 'giris_yap.dart';
 
 class Anasayfa extends StatelessWidget {
   @override
