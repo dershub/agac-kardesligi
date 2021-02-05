@@ -24,7 +24,6 @@ Widget contAltRow(IconData icon, String text, Widget child) {
           child: Icon(
             icon,
             color: Renk.yaziKoyuYesil,
-            size: 40,
           ),
         ),
         Expanded(
@@ -32,7 +31,6 @@ Widget contAltRow(IconData icon, String text, Widget child) {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: 20,
               color: Renk.yaziKoyuYesil,
               fontWeight: FontWeight.bold,
             ),
