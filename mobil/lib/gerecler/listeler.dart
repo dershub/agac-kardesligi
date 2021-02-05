@@ -7,4 +7,16 @@ class Liste {
     FontAwesomeIcons.bell,
     FontAwesomeIcons.user,
   ];
+  static final Set<String> bitkiIsimleri = {
+    "Elma",
+    "Armut",
+    "Kestane",
+    "Muz",
+    "Portakal",
+    "Limon",
+    "Badem",
+    "Ceviz",
+    "Zeytin",
+    "Kivi",
+  };
 }

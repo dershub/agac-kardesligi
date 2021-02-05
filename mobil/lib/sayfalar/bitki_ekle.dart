@@ -4,9 +4,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../gerecler/listeler.dart';
 import '../gerecler/renkler.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
+import '../ui/paylas_butonu.dart';
 import '../ui/safe_arka.dart';
 
 class BitkiEkle extends StatefulWidget {
@@ -16,6 +18,14 @@ class BitkiEkle extends StatefulWidget {
 
 class _BitkiEkleState extends State<BitkiEkle> {
   File _resim;
+  String _evre = "Tohum", _baslik, _aciklama, _isim = Liste.bitkiIsimleri.first;
+
+  void _evreSecimi(String gonderilenEvre) {
+    _evre = gonderilenEvre;
+    print("_evreSecimi");
+    print(_evre);
+  }
+
   Future<void> _resimSec() async {
     PickedFile secilenResim =
         await ImagePicker().getImage(source: ImageSource.gallery);
@@ -27,6 +37,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
 
     setState(() {});
   }
+
+  Future<void> _bitkiyiPaylas() {}
 
   @override
   Widget build(BuildContext context) {
@@ -113,19 +125,32 @@ class _BitkiEkleState extends State<BitkiEkle> {
                           TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "Buraya adını giriniz",
+                              hintText: "Buraya başlık giriniz",
                             ),
+                            onChanged: (yeniDeger) => _baslik = yeniDeger,
                           ),
-                          StatefulBuilder(builder: (ctx, setstate) {
-                            return Expanded(
-                              child: EvreSecimi(),
-                            );
-                          }),
+                          Expanded(
+                            child: EvreSecimi(evreDegistir: _evreSecimi),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ],
+              ),
+              SizedBox(height: 8),
+              StatefulBuilder(
+                builder: (ctx, burayiYenile) {
+                  return DropdownButton<String>(
+                    value: _isim,
+                    items: Liste.bitkiIsimleri
+                        .map((e) =>
+                            DropdownMenuItem<String>(value: e, child: Text(e)))
+                        .toList(),
+                    onChanged: (secilenEleman) =>
+                        burayiYenile(() => _isim = secilenEleman),
+                  );
+                },
               ),
               SizedBox(height: 8),
               Expanded(
@@ -144,6 +169,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
                             hintStyle: TextStyle(color: Renk.koyuGri),
                             border: InputBorder.none,
                           ),
+                          onChanged: (v) => _aciklama = v,
                         ),
                       ),
                       contAltArkaPlan(
@@ -194,6 +220,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
                   ),
                 ),
               ),
+              paylasButonu(_bitkiyiPaylas),
               RaisedButton(
                 onPressed: () {},
                 child: Text("Paylaş"),
