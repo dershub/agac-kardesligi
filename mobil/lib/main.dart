@@ -1,10 +1,13 @@
-import 'package:agackardesligi/mainsayfa.dart';
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'sayfalar/anasayfa.dart';
 
 void main() async {
   // Widgetları ekrana getirmeye hazır olduğumuzdan emin oluyoruz
@@ -33,12 +36,7 @@ class Baslangic extends StatelessWidget {
           }),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return MainSayfa(
-                girisYapildiMi:
-                    FirebaseAuth.instance.currentUser.emailVerified == false
-                        ? false
-                        : true,
-              );
+              return Anasayfa();
             }
             return Center(child: CircularProgressIndicator());
           },
