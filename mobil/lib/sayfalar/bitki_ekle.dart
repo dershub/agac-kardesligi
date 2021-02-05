@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +8,9 @@ import '../gerecler/listeler.dart';
 import '../gerecler/renkler.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
+import '../ui/ozel_appbar.dart';
 import '../ui/paylas_butonu.dart';
 import '../ui/safe_arka.dart';
-import '../ui/ozel_appbar.dart';
 
 class BitkiEkle extends StatefulWidget {
   @override
@@ -46,7 +45,9 @@ class _BitkiEkleState extends State<BitkiEkle> {
   Widget build(BuildContext context) {
     return SafeArka(
       child: Scaffold(
-        appBar: OzelAppBar(geriGelsinMi: true,),
+        appBar: OzelAppBar(
+          geriGelsinMi: true,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
