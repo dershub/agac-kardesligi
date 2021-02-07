@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../gerecler/listeler.dart';
@@ -20,6 +24,8 @@ class BitkiEkle extends StatefulWidget {
 class _BitkiEkleState extends State<BitkiEkle> {
   File _resim;
   String _evre = "Tohum", _baslik, _aciklama, _isim = Liste.bitkiIsimleri.first;
+  ValueNotifier<double> _yuklenmeOraniHabercisi = ValueNotifier<double>(0);
+  ValueNotifier<bool> _yuklenmeIslemiBasladi = ValueNotifier<bool>(false);
 
   void _evreSecimi(String gonderilenEvre) {
     _evre = gonderilenEvre;
@@ -39,7 +45,64 @@ class _BitkiEkleState extends State<BitkiEkle> {
     setState(() {});
   }
 
-  Future<void> _bitkiyiPaylas() {}
+  Future<void> _bitkiyiPaylas() async {
+    _yuklenmeIslemiBasladi.value = true;
+    String mesaj;
+    if (_resim == null)
+      mesaj = "Lütfen ekleyeceğiniz bitki için resim seçin!";
+    else if ((_baslik ?? '').length < 10)
+      mesaj =
+          "Lütfen ekleyeceğiniz bitki için en az 20 karakter uzunluğunda bir başlık girin!";
+    else if ((_aciklama ?? '').length < 20)
+      mesaj =
+          "Lütfen ekleyeceğiniz bitki için en az 40 karakter uzunluğunda bir açıklama girin!";
+    else {
+      Reference ref =
+          FirebaseStorage.instance.ref('bitki-resimleri/bitkiresimi.jpg');
+      UploadTask yuklemeGorevi = ref.putFile(_resim);
+      yuklemeGorevi.snapshotEvents.listen((event) {
+        switch (event.state) {
+          case TaskState.running:
+            _yuklenmeOraniHabercisi.value =
+                yuklemeGorevi.snapshot.bytesTransferred /
+                    yuklemeGorevi.snapshot.totalBytes;
+            break;
+          case TaskState.success:
+            _yuklenmeOraniHabercisi.value = 1;
+            break;
+          case TaskState.error:
+            Fluttertoast.showToast(
+                msg: "Resim sunucuya yüklenirken hata oluştu");
+            break;
+          default:
+        }
+      });
+
+      await yuklemeGorevi.whenComplete(() {});
+      String indirmeLinki = await ref.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('bitkiler').add({
+        'resimLinki': indirmeLinki,
+        'baslik': _baslik,
+        'aciklama': _aciklama,
+        'eklemeTarihi': FieldValue.serverTimestamp(),
+        'ismi': _isim,
+        'evre': _evre,
+        'ekleyen': FirebaseAuth.instance.currentUser.uid,
+      });
+
+      mesaj = "İşlem başarıyla gerçekleşti";
+    }
+
+    await Fluttertoast.showToast(
+      msg: mesaj,
+      timeInSecForIosWeb: 3,
+      toastLength: Toast.LENGTH_LONG,
+    );
+
+    _yuklenmeIslemiBasladi.value = false;
+    if (_yuklenmeOraniHabercisi.value > 0.9) Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,49 +215,97 @@ class _BitkiEkleState extends State<BitkiEkle> {
                             border: InputBorder.none,
                           ),
                           onChanged: (v) => _aciklama = v,
+                          maxLines: 5,
                         ),
                       ),
-                      contAltArkaPlan(
+                      Container(
+                        height: 160,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Renk.mintYesil,
+                        ),
                         child: Column(
                           children: [
-                            contAltRow(
-                              Icons.watch_later_outlined,
-                              "Saat",
-                              Text(
-                                "18:00",
-                                style: TextStyle(
-                                  color: Renk.yaziKoyuYesil,
-                                  fontWeight: FontWeight.bold,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Icon(Icons.brightness_1,
+                                      color: Renk.yesil99, size: 10),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    text: "Mısır",
+                                    style: TextStyle(
+                                      color: Renk.koyuYesil,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: " bitkinizin",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: " alarmı",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: SwitchListTile(
+                                    value: true,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        //_seciliMi = value;
+                                      });
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            Expanded(
+                              child: contAltArkaPlan(
+                                child: Column(
+                                  children: [
+                                    contAltRow(
+                                      Icons.watch_later_outlined,
+                                      "Saat",
+                                      Text(
+                                        "18:00",
+                                        style: TextStyle(
+                                          color: Renk.yaziKoyuYesil,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: Colors.white,
+                                      thickness: 3,
+                                    ),
+                                    contAltRow(
+                                      Icons.autorenew,
+                                      "Tekrarla",
+                                      Text(
+                                        "Haftalık",
+                                        style: TextStyle(
+                                          color: Renk.yaziKoyuYesil,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              thickness: 3,
-                            ),
-                            contAltRow(
-                              Icons.add_alarm_outlined,
-                              "Uyarı",
-                              Icon(
-                                Icons.check_circle,
-                                color: Renk.yaziKoyuYesil,
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              thickness: 3,
-                            ),
-                            contAltRow(
-                              Icons.autorenew,
-                              "Tekrarla",
-                              Text(
-                                "Haftalık",
-                                style: TextStyle(
-                                  color: Renk.yaziKoyuYesil,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -202,11 +313,41 @@ class _BitkiEkleState extends State<BitkiEkle> {
                   ),
                 ),
               ),
-              paylasButonu(_bitkiyiPaylas),
-              RaisedButton(
-                onPressed: () {},
-                child: Text("Paylaş"),
+              SizedBox(height: 12),
+              ValueListenableBuilder<double>(
+                valueListenable: _yuklenmeOraniHabercisi,
+                builder: (ctx, yuklenmeOrani, w) {
+                  if (yuklenmeOrani == 0 || yuklenmeOrani == 1)
+                    return SizedBox();
+                  else
+                    return Stack(
+                      children: [
+                        SizedBox(
+                          height: 48,
+                          child: LinearProgressIndicator(
+                            value: yuklenmeOrani,
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Center(
+                            child: Text("%${(yuklenmeOrani * 100).round()}"),
+                          ),
+                        ),
+                      ],
+                    );
+                },
               ),
+              SizedBox(height: 12),
+              ValueListenableBuilder<bool>(
+                valueListenable: _yuklenmeIslemiBasladi,
+                builder: (ctx, yuklenmeBasladi, w) {
+                  if (yuklenmeBasladi)
+                    return SizedBox();
+                  else
+                    return paylasButonu(_bitkiyiPaylas);
+                },
+              ),
+              SizedBox(height: 12),
             ],
           ),
         ),

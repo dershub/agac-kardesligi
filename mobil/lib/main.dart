@@ -1,5 +1,4 @@
-
-
+import 'package:agackardesligi/mainsayfa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class Baslangic extends StatelessWidget {
           }),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Anasayfa();
+              return MainSayfa(girisYapildiMi: true);
             }
             return Center(child: CircularProgressIndicator());
           },
