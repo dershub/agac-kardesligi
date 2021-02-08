@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:agackardesligi/modeller/bitki.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,15 +82,18 @@ class _BitkiEkleState extends State<BitkiEkle> {
       await yuklemeGorevi.whenComplete(() {});
       String indirmeLinki = await ref.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('bitkiler').add({
-        'resimLinki': indirmeLinki,
-        'baslik': _baslik,
-        'aciklama': _aciklama,
-        'eklemeTarihi': FieldValue.serverTimestamp(),
-        'ismi': _isim,
-        'evre': _evre,
-        'ekleyen': FirebaseAuth.instance.currentUser.uid,
-      });
+      Bitki bitki = Bitki(baslik: _baslik, aciklama: _aciklama);
+      bitki.resimLinki = "rastgele bir string";
+
+      print(bitki.resimLinki);
+
+      await FirebaseFirestore.instance
+          .collection('bitkiler')
+          .add(bitki.mapeCevir());
+
+      // Veriyi firestore'dan almak için gelen veri tipini kullandığımız sınıfa dönüştürmek gerekiyor
+      Map<String, dynamic> data /* = doc.data()  */;
+      Bitki yeniBitki = Bitki.fromMap(bitki.toMap());
 
       mesaj = "İşlem başarıyla gerçekleşti";
     }
