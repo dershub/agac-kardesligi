@@ -6,8 +6,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'sayfalar/anasayfa.dart';
-
 void main() async {
   // Widgetları ekrana getirmeye hazır olduğumuzdan emin oluyoruz
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,79 +3,77 @@
         'baslik': _baslik,
         'aciklama': _aciklama,
         'eklemeTarihi': FieldValue.serverTimestamp(),
-        'ismi': _isim,
+        'isim': _isim,
         'evre': _evre,
         'ekleyen': FirebaseAuth.instance.currentUser.uid,
       } */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../gerecler/listeler.dart';
+import 'resim.dart';
+
 class Bitki {
-  String _resimLinki;
+  String id;
+  String resimLinki;
   String baslik;
   String aciklama;
   DateTime /* Timestamp */ eklemeTarihi;
-  String ismi;
+  String isim;
   String evre;
   String ekleyen;
+  List<Resim> resimler;
 
-  // kapsüllemenin 2 anahtar kavramı => set ve get
-
-  set resimLinki(String link) {
-    if (link.startsWith("https://"))
-      _resimLinki = link;
-    else
-      print("resimlinkini değiştirmek için doğru bir link girin");
-  }
-
-  String get resimLinki {
-    return _resimLinki.split('/').last;
-  }
-
-  // Default Constructor
   Bitki({
-    @required String resimLinki,
-    @required this.baslik,
-    @required this.aciklama,
-    @required this.eklemeTarihi,
-    @required this.ismi,
-    @required this.evre,
-    @required this.ekleyen,
-  }) {
-    this.resimLinki = resimLinki;
-  }
-  /*  {
-    this.resimLinki = resimLinki;
-    this.baslik = baslik;
-    this.aciklama = aciklama;
-  } */
-
-  // named constructor
-  Bitki.fromMap(Map<String, dynamic> data) {
-    this.aciklama = data['aciklama'];
-    this.baslik = data['baslik'];
-    this.eklemeTarihi = data['eklemeTarihi'];
-    this.resimLinki = data['resimLinki'];
-  }
-
-  // named constructor
-  Bitki.agactan({
+    @required this.id,
     @required this.resimLinki,
     @required this.baslik,
     @required this.aciklama,
     @required this.eklemeTarihi,
-    @required this.ismi,
+    @required this.isim,
+    @required this.evre,
     @required this.ekleyen,
+    @required this.resimler,
+  });
+
+  Bitki.yeni({
+    this.baslik = "",
+    this.aciklama = "",
+    this.evre = "Tohum",
+    this.resimler = const [],
   }) {
-    this.evre = "Ağaç";
+    this.isim = Liste.bitkiIsimleri.first;
+    this.eklemeTarihi = DateTime.now();
+    this.ekleyen = FirebaseAuth.instance.currentUser.uid;
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'resimLinki': resimLinki,
-      'baslik': baslik,
-      'aciklama': aciklama,
-      'eklemeTarihi': eklemeTarihi,
+  Bitki.fromJson(Map<String, dynamic> jsonData, String id) {
+    this.id = id;
+    this.resimLinki = jsonData['resimLinki'];
+    this.baslik = jsonData['baslik'];
+    this.aciklama = jsonData['aciklama'];
+    this.eklemeTarihi = (jsonData['eklemeTarihi'] as Timestamp).toDate();
+    this.isim = jsonData['isim'];
+    this.evre = jsonData['evre'];
+    this.ekleyen = jsonData['ekleyen'];
+    this.resimler = ((jsonData['resimler'] ?? []) as List<Map>)
+        .map((e) => Resim.fromJson(e))
+        .toList()
+        .cast<Resim>();
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      "resimLinki": this.resimLinki,
+      "baslik": this.baslik,
+      "aciklama": this.aciklama,
+      "eklemeTarihi": this.eklemeTarihi,
+      "isim": this.isim,
+      "evre": this.evre,
+      "ekleyen": this.ekleyen,
+      "resimler": this.resimler.map((e) => e.toJson()).toList(),
     };
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:agackardesligi/modeller/bitki.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../gerecler/listeler.dart';
 import '../gerecler/renkler.dart';
+import '../modeller/bitki.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
 import '../ui/ozel_appbar.dart';
@@ -23,15 +22,15 @@ class BitkiEkle extends StatefulWidget {
 }
 
 class _BitkiEkleState extends State<BitkiEkle> {
+  Bitki _bitki = Bitki.yeni();
   File _resim;
-  String _evre = "Tohum", _baslik, _aciklama, _isim = Liste.bitkiIsimleri.first;
   ValueNotifier<double> _yuklenmeOraniHabercisi = ValueNotifier<double>(0);
   ValueNotifier<bool> _yuklenmeIslemiBasladi = ValueNotifier<bool>(false);
 
   void _evreSecimi(String gonderilenEvre) {
-    _evre = gonderilenEvre;
+    _bitki.evre = gonderilenEvre;
     print("_evreSecimi");
-    print(_evre);
+    print(_bitki.evre);
   }
 
   Future<void> _resimSec() async {
@@ -43,7 +42,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
     else
       _resim = null;
 
-    setState(() {});
+    await Future.delayed(Duration(seconds: 3));
+    if (mounted) setState(() {});
   }
 
   Future<void> _bitkiyiPaylas() async {
@@ -51,10 +51,10 @@ class _BitkiEkleState extends State<BitkiEkle> {
     String mesaj;
     if (_resim == null)
       mesaj = "Lütfen ekleyeceğiniz bitki için resim seçin!";
-    else if ((_baslik ?? '').length < 10)
+    else if (_bitki.baslik.length < 10)
       mesaj =
           "Lütfen ekleyeceğiniz bitki için en az 20 karakter uzunluğunda bir başlık girin!";
-    else if ((_aciklama ?? '').length < 20)
+    else if (_bitki.aciklama.length < 20)
       mesaj =
           "Lütfen ekleyeceğiniz bitki için en az 40 karakter uzunluğunda bir açıklama girin!";
     else {
@@ -80,20 +80,13 @@ class _BitkiEkleState extends State<BitkiEkle> {
       });
 
       await yuklemeGorevi.whenComplete(() {});
-      String indirmeLinki = await ref.getDownloadURL();
+      _bitki.resimLinki = await ref.getDownloadURL();
 
-      Bitki bitki = Bitki(baslik: _baslik, aciklama: _aciklama);
-      bitki.resimLinki = "rastgele bir string";
+      print(_bitki.resimLinki);
 
-      print(bitki.resimLinki);
-
-      await FirebaseFirestore.instance
-          .collection('bitkiler')
-          .add(bitki.mapeCevir());
-
-      // Veriyi firestore'dan almak için gelen veri tipini kullandığımız sınıfa dönüştürmek gerekiyor
-      Map<String, dynamic> data /* = doc.data()  */;
-      Bitki yeniBitki = Bitki.fromMap(bitki.toMap());
+      // Spread operatörü ile bitki map eklenmeTarihi key'ine tekrar atama yapılması
+      await FirebaseFirestore.instance.collection('bitkiler').add(
+          {..._bitki.toJson(), 'eklemeTarihi': FieldValue.serverTimestamp()});
 
       mesaj = "İşlem başarıyla gerçekleşti";
     }
@@ -176,7 +169,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
                               border: InputBorder.none,
                               hintText: "Buraya başlık giriniz",
                             ),
-                            onChanged: (yeniDeger) => _baslik = yeniDeger,
+                            onChanged: (yeniDeger) => _bitki.baslik = yeniDeger,
                           ),
                           Expanded(
                             child: EvreSecimi(evreDegistir: _evreSecimi),
@@ -191,13 +184,13 @@ class _BitkiEkleState extends State<BitkiEkle> {
               StatefulBuilder(
                 builder: (ctx, burayiYenile) {
                   return DropdownButton<String>(
-                    value: _isim,
+                    value: _bitki.isim,
                     items: Liste.bitkiIsimleri
                         .map((e) =>
                             DropdownMenuItem<String>(value: e, child: Text(e)))
                         .toList(),
                     onChanged: (secilenEleman) =>
-                        burayiYenile(() => _isim = secilenEleman),
+                        burayiYenile(() => _bitki.isim = secilenEleman),
                   );
                 },
               ),
@@ -218,7 +211,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
                             hintStyle: TextStyle(color: Renk.koyuGri),
                             border: InputBorder.none,
                           ),
-                          onChanged: (v) => _aciklama = v,
+                          onChanged: (v) => _bitki.aciklama = v,
                           maxLines: 5,
                         ),
                       ),
