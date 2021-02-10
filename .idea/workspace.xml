@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e8e6cce-561d-4231-a1ce-8751425f9f1a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/lib/gerecler/renkler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/gerecler/renkler.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/anasayfa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/anasayfa.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/bitki_ekle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/bitki_ekle.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/gerecler/listeler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/gerecler/listeler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobil/lib/mainsayfa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/mainsayfa.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobil/lib/sayfalar/giris_yap.dart" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/lib/sayfalar/giris_yap.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobil/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mobil/pubspec.lock" afterDir="false" />
     </list>
@@ -28,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1nwdfh1QebF85Dun9koouO58JD2" />
@@ -39,10 +39,18 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../agacim" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/mobil/lib/main.dart" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -57,14 +65,62 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
-    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612305225694">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="154" y="22" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612982766196">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1612305225694" />
+    <state x="154" y="22" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1612982766196" />
+    <state x="429" y="157" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1612982761500">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="429" y="157" key="#com.intellij.ide.util.TreeFileChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1612982761500" />
+    <state x="445" y="6" key="CommitChangelistDialog2" timestamp="1612986677449">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="445" y="6" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1612986677449" />
     <state x="463" y="125" key="FileChooserDialogImpl" timestamp="1612306319140">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="125" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1612306319140" />
+    <state width="1491" height="205" key="GridCell.Tab.0.bottom" timestamp="1612985751538">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="205" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1612985751538" />
+    <state width="1491" height="205" key="GridCell.Tab.0.center" timestamp="1612985751537">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="205" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1612985751537" />
+    <state width="1491" height="205" key="GridCell.Tab.0.left" timestamp="1612985751537">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="205" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1612985751537" />
+    <state width="1491" height="205" key="GridCell.Tab.0.right" timestamp="1612985751537">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="205" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1612985751537" />
+    <state x="285" y="55" key="SettingsEditor" timestamp="1612982598810">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="285" y="55" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1612982598810" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1612986311814">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1612986311814" />
+    <state x="564" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612986595124">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="564" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1612986595124" />
   </component>
 </project>

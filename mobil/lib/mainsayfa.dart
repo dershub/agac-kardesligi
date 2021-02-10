@@ -14,6 +14,7 @@ class MainSayfa extends StatefulWidget {
   final bool girisYapildiMi;
 
   const MainSayfa({Key key, @required this.girisYapildiMi}) : super(key: key);
+
   @override
   _MainSayfaState createState() => _MainSayfaState();
 }
@@ -21,6 +22,7 @@ class MainSayfa extends StatefulWidget {
 class _MainSayfaState extends State<MainSayfa> {
   int _seciliSayfa = 0;
   Box _mainSayfaBox = Hive.box('mainsayfa');
+
   _sayfaDegistir(int i) {
     _seciliSayfa = i;
     _mainSayfaBox.put('aktifSayfa', i);
@@ -101,9 +103,10 @@ class _MainSayfaState extends State<MainSayfa> {
                             items: [
                               for (IconData m in Liste.bottomElemanlar)
                                 BottomNavigationBarItem(
-                                    backgroundColor: Renk.siyah,
-                                    icon: Icon(m),
-                                    label: ""),
+                                  backgroundColor: Renk.siyah,
+                                  icon: Icon(m),
+                                  title: Text(""),
+                                ),
                             ],
                           ),
                         );

@@ -7,6 +7,12 @@ class Liste {
     FontAwesomeIcons.bell,
     FontAwesomeIcons.user,
   ];
+  static final List labels = [
+    "Ana Sayfa",
+    "Bitki Paylaş",
+    "Hatırlatıcı",
+    "Profil",
+  ];
   static final Set<String> bitkiIsimleri = {
     "Elma",
     "Armut",

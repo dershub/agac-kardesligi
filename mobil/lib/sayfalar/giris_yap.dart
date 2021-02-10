@@ -14,56 +14,28 @@ class GirisYap extends StatefulWidget {
 }
 
 class _GirisYapState extends State<GirisYap> {
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  final _firebaseAuth=FirebaseAuth.instance;
 
-  Future<void> _googleIleGirisYap() async {
-    try {
-      if ((await GoogleSignIn().isSignedIn())) {
-        await GoogleSignIn().signOut();
-        await GoogleSignIn().disconnect();
+  Future<User> signInWithGoogle() async {
+    //FİREBASE ILE ILGILI BIR HATA VAR DEVELOPER EXCEPTION OLARAK BULDUM HATA KAYNAGINI
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
+    String _googleUserEmail = _googleUser.email;
+    if (_googleUser != null) {
+      GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
+      if (_googleAuth.idToken != null && _googleAuth.accessToken != null) {
+        UserCredential sonuc = await _firebaseAuth.signInWithCredential(
+            GoogleAuthProvider.credential(
+                idToken: _googleAuth.idToken,
+                accessToken: _googleAuth.accessToken));
+        User _user = sonuc.user;
+        sonuc.user.updateEmail(_googleUserEmail);
+        print("USER INFOS "+_user.email,);
+      } else {
+        return null;
       }
-      final GoogleSignInAccount googleHesabi = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleDogrulama =
-      await googleHesabi.authentication;
-
-      // Create a new credential
-      final GoogleAuthCredential kimlikBilgileri =
-      GoogleAuthProvider.credential(
-        accessToken: googleDogrulama.accessToken,
-        idToken: googleDogrulama.idToken,
-      );
-
-      try {
-        // Anonim hesaptan çıkış yap
-        await FirebaseAuth.instance.signOut();
-        // Google hesabı ile giriş yap
-        await FirebaseAuth.instance.signInWithCredential(kimlikBilgileri);
-
-        final DocumentReference dr = FirebaseFirestore.instance
-            .collection('kullanicilar')
-            .doc(FirebaseAuth.instance.currentUser.uid);
-
-        if ((await dr.get()).exists)
-          await dr.update({
-            'displayName': FirebaseAuth.instance.currentUser.displayName,
-            'email': FirebaseAuth.instance.currentUser.email,
-            'photoUrl': FirebaseAuth.instance.currentUser.photoURL,
-            'oturumAcmaTarihi': FieldValue.serverTimestamp(),
-          });
-        else
-          await dr.set({
-            'displayName': FirebaseAuth.instance.currentUser.displayName,
-            'email': FirebaseAuth.instance.currentUser.email,
-            'photoUrl': FirebaseAuth.instance.currentUser.photoURL,
-            'kayitTarihi': FieldValue.serverTimestamp(),
-          });
-
-        Navigator.popUntil(context, (route) => route.isFirst);
-      } catch (e) {
-        print(e);
-      }
-    } catch (error) {
-      print(error);
+    } else {
+      return null;
     }
   }
 
@@ -94,7 +66,7 @@ class _GirisYapState extends State<GirisYap> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  GoogleAuthButton(onPressed: _googleIleGirisYap),
+                  GoogleAuthButton(onPressed: signInWithGoogle),
                   SizedBox(height: 16),
                   AppleAuthButton(
                     onPressed: () {},
