@@ -26,6 +26,9 @@ class _BitkiEkleState extends State<BitkiEkle> {
   File _resim;
   ValueNotifier<double> _yuklenmeOraniHabercisi = ValueNotifier<double>(0);
   ValueNotifier<bool> _yuklenmeIslemiBasladi = ValueNotifier<bool>(false);
+  ValueNotifier<bool> _hatirlaticiHabercisi = ValueNotifier<bool>(false);
+  TimeOfDay _hatirlaticiAn;
+  Set _hatirlaticiPeriyotlari = {"Aylik", "Haftalik", "Günlük"};
 
   void _evreSecimi(String gonderilenEvre) {
     _bitki.evre = gonderilenEvre;
@@ -45,6 +48,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
     await Future.delayed(Duration(seconds: 3));
     if (mounted) setState(() {});
   }
+
+  Future<void> _hatirlaticiEkle() {}
 
   Future<void> _bitkiyiPaylas() async {
     _yuklenmeIslemiBasladi.value = true;
@@ -88,6 +93,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
       await FirebaseFirestore.instance.collection('bitkiler').add(
           {..._bitki.toJson(), 'eklemeTarihi': FieldValue.serverTimestamp()});
 
+      if (_hatirlaticiHabercisi.value) await _hatirlaticiEkle();
+
       mesaj = "İşlem başarıyla gerçekleşti";
     }
 
@@ -105,12 +112,10 @@ class _BitkiEkleState extends State<BitkiEkle> {
   Widget build(BuildContext context) {
     return SafeArka(
       child: Scaffold(
-        appBar: OzelAppBar(
-          geriGelsinMi: true,
-        ),
+        appBar: OzelAppBar(geriGelsinMi: true),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
+          child: ListView(
             children: [
               Row(
                 children: [
@@ -195,119 +200,122 @@ class _BitkiEkleState extends State<BitkiEkle> {
                 },
               ),
               SizedBox(height: 8),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Renk.acikGri,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Buraya açıklama giriniz",
-                            hintStyle: TextStyle(color: Renk.koyuGri),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (v) => _bitki.aciklama = v,
-                          maxLines: 5,
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Renk.acikGri,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                height: MediaQuery.of(context).size.width * 0.9,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Buraya açıklama giriniz",
+                          hintStyle: TextStyle(color: Renk.koyuGri),
+                          border: InputBorder.none,
                         ),
+                        onChanged: (v) => _bitki.aciklama = v,
+                        maxLines: 5,
                       ),
-                      Container(
-                        height: 160,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Renk.mintYesil,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10),
-                                  child: Icon(Icons.brightness_1,
-                                      color: Renk.yesil99, size: 10),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Mısır",
-                                    style: TextStyle(
-                                      color: Renk.koyuYesil,
-                                      fontWeight: FontWeight.bold,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Renk.mintYesil,
+                      ),
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: _hatirlaticiHabercisi,
+                        builder: (ctx, hatirlatici, w) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    // • bullet symbol => madde işareti
+                                    child: Icon(
+                                      Icons.brightness_1,
+                                      color: Renk.yesil99,
+                                      size: 10,
                                     ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: " bitkinizin",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: " alarmı",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
                                   ),
-                                ),
-                                Expanded(
-                                  child: SwitchListTile(
-                                    value: true,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        //_seciliMi = value;
-                                      });
-                                    },
+                                  Text("Resim ekleme hatırlatıcısı"),
+                                  Expanded(
+                                    child: SwitchListTile(
+                                      value: hatirlatici,
+                                      onChanged: (v) {
+                                        _hatirlaticiHabercisi.value = v;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (hatirlatici)
+                                IntrinsicHeight(
+                                  child: contAltArkaPlan(
+                                    child: Column(
+                                      children: [
+                                        contAltRow(
+                                          Icons.watch_later_outlined,
+                                          "Saat",
+                                          InkWell(
+                                            onTap: () {
+                                              showTimePicker(
+                                                context: context,
+                                                initialTime: TimeOfDay.now(),
+                                                builder: (BuildContext context,
+                                                    Widget child) {
+                                                  return MediaQuery(
+                                                    data: MediaQuery.of(context)
+                                                        .copyWith(
+                                                      alwaysUse24HourFormat:
+                                                          true,
+                                                    ),
+                                                    child: child,
+                                                  );
+                                                },
+                                              ).then((value) => setState(() {
+                                                    _hatirlaticiAn = value;
+                                                  }));
+                                            },
+                                            child: Text(
+                                              "${_hatirlaticiAn == null ? 'Seçiniz' : _hatirlaticiAn.format(context)}",
+                                              style: TextStyle(
+                                                color: Renk.yaziKoyuYesil,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Colors.white,
+                                          thickness: 3,
+                                        ),
+                                        contAltRow(
+                                          Icons.autorenew,
+                                          "Tekrarla",
+                                          Text(
+                                            "Haftalık",
+                                            style: TextStyle(
+                                              color: Renk.yaziKoyuYesil,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )
-                              ],
-                            ),
-                            Expanded(
-                              child: contAltArkaPlan(
-                                child: Column(
-                                  children: [
-                                    contAltRow(
-                                      Icons.watch_later_outlined,
-                                      "Saat",
-                                      Text(
-                                        "18:00",
-                                        style: TextStyle(
-                                          color: Renk.yaziKoyuYesil,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(
-                                      color: Colors.white,
-                                      thickness: 3,
-                                    ),
-                                    contAltRow(
-                                      Icons.autorenew,
-                                      "Tekrarla",
-                                      Text(
-                                        "Haftalık",
-                                        style: TextStyle(
-                                          color: Renk.yaziKoyuYesil,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                            ],
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 12),

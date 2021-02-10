@@ -29,6 +29,7 @@ dependencies:
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
   firebase_storage: ^7.0.0
+  flutter_local_notifications: ^4.0.1
   fluttertoast: ^7.1.6
   font_awesome_flutter: ^8.11.0
   google_sign_in: ^4.5.9
