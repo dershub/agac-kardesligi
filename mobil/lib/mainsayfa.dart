@@ -47,7 +47,7 @@ class _MainSayfaState extends State<MainSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: HiveListener(
-        box: _mainSayfaBox, 
+        box: _mainSayfaBox,
         keys: ['aktifSayfa'],
         builder: (b) {
           return _sayfaGetir(b.get('aktifSayfa'));
@@ -73,26 +73,21 @@ class _MainSayfaState extends State<MainSayfa> {
                                 color: Renk.yesil99.withOpacity(0.5),
                                 spreadRadius: 7,
                                 blurRadius: 50,
-                                offset:
-                                    Offset(0, -5), // changes position of shadow
+                                offset: Offset(0, -5), // changes position of shadow
                               ),
                             ],
                             color: Renk.beyaz,
                             borderRadius: BorderRadius.circular(40.0),
-                            border: Border.all(
-                                color: Renk.griDA.withOpacity(0.3), width: 3),
+                            border: Border.all(color: Renk.griDA.withOpacity(0.3), width: 3),
                           ),
                           child: BottomNavigationBar(
                             showSelectedLabels: false,
                             showUnselectedLabels: false,
                             backgroundColor: Colors.transparent,
                             type: BottomNavigationBarType.fixed,
-                            unselectedIconTheme:
-                                IconThemeData(color: Renk.griDA, size: 25.0),
-                            selectedIconTheme:
-                                IconThemeData(color: Renk.yesil99, size: 30.0),
-                            currentIndex:
-                                box.get('aktifSayfa', defaultValue: 0),
+                            unselectedIconTheme: IconThemeData(color: Renk.griDA, size: 25.0),
+                            selectedIconTheme: IconThemeData(color: Renk.yesil99, size: 30.0),
+                            currentIndex: box.get('aktifSayfa', defaultValue: 0),
                             elevation: 0.0,
                             onTap: (int i) {
                               _sayfaDegistir(i);
@@ -100,10 +95,7 @@ class _MainSayfaState extends State<MainSayfa> {
                             },
                             items: [
                               for (IconData m in Liste.bottomElemanlar)
-                                BottomNavigationBarItem(
-                                    backgroundColor: Renk.siyah,
-                                    icon: Icon(m),
-                                    label: ""),
+                                BottomNavigationBarItem(backgroundColor: Renk.siyah, icon: Icon(m), label: ""),
                             ],
                           ),
                         );
@@ -170,8 +162,7 @@ class _MainSayfaState extends State<MainSayfa> {
               height: 70,
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (c) => GirisYap()));
+                  Navigator.push(context, MaterialPageRoute(builder: (c) => GirisYap()));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

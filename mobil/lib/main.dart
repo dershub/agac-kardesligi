@@ -32,10 +32,11 @@ class Baslangic extends StatelessWidget {
               await FirebaseAuth.instance.signInAnonymously();
           }),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return MainSayfa(girisYapildiMi: true);
+             if (snapshot.connectionState == ConnectionState.done) {
+              return  MainSayfa(girisYapildiMi: FirebaseAuth.instance.currentUser.emailVerified == false ? false:true,);
             }
             return Center(child: CircularProgressIndicator());
+            
           },
         ),
       ),

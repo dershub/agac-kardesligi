@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter:
+  flutter: 
     sdk: flutter
   auth_buttons: ^0.0.5
   cloud_firestore: ^0.16.0
