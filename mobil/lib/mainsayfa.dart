@@ -48,7 +48,7 @@ class _MainSayfaState extends State<MainSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: HiveListener(
-        box: _mainSayfaBox,
+        box: _mainSayfaBox, 
         keys: ['aktifSayfa'],
         builder: (b) {
           return _sayfaGetir(b.get('aktifSayfa'));

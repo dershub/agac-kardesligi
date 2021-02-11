@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   // Widgetları ekrana getirmeye hazır olduğumuzdan emin oluyoruz
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter('weynehive');
+  await Hive.initFlutter('bitkihive');
   String yol = (await getApplicationDocumentsDirectory()).path;
   (await Hive.openBox('ayarlar')).put('yol', yol);
   (await Hive.openBox('mainsayfa')).put('aktifSayfa', 0);
