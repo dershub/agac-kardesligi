@@ -12,5 +12,7 @@ class Renk {
   static final Color siyah = Colors.black;
   static final Color griDA = Color(0xFFDADADA);
   static final Color griAE = Color(0xFFAEAEAE);
-  
+  static final Color genelBildirimAP = Color(0xFFFFEECC);
+  static final Color genelBildirimIcon = Color(0xFFE39E19);
+  static final Color acikYesilHatirlatmaPaneli = Color(0xFFD0E0D7);
 }
