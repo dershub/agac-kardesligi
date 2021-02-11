@@ -4,11 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import '../gerecler/listeler.dart';
 import '../gerecler/renkler.dart';
+import '../main.dart';
 import '../modeller/bitki.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
@@ -30,6 +34,17 @@ class _BitkiEkleState extends State<BitkiEkle> {
   TimeOfDay _hatirlaticiAn;
   Set _hatirlaticiPeriyotlari = {"Aylik", "Haftalik", "Günlük"};
 
+  AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your other channel id',
+    'your other channel name',
+    'your other channel description',
+    importance: Importance.max,
+    priority: Priority.high,
+  );
+
+  IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
   void _evreSecimi(String gonderilenEvre) {
     _bitki.evre = gonderilenEvre;
     print("_evreSecimi");
@@ -49,7 +64,43 @@ class _BitkiEkleState extends State<BitkiEkle> {
     if (mounted) setState(() {});
   }
 
-  Future<void> _hatirlaticiEkle() {}
+  Future<void> _hatirlaticiEkle() async {
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    flutterLocalNotificationsPlugin
+        //.zonedSchedule(id, title, body, scheduledDate, notificationDetails, uiLocalNotificationDateInterpretation: null, androidAllowWhileIdle: null)
+        .periodicallyShow(
+      123,
+      "Resim Hatırlatıcı",
+      "Bitkinize Resim Eklemeyi Hatırlatıyorum",
+      RepeatInterval.daily,
+      NotificationDetails(),
+      payload: "gizli bilgiler",
+    );
+    DateTime simdi = DateTime.now();
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      123,
+      "Resim Hatırlatıcı",
+      "Bitkinize Resim Eklemeyi Hatırlatıyorum",
+      tz.TZDateTime(
+        tz.local,
+        simdi.year,
+        simdi.month,
+        simdi.day,
+        _hatirlaticiAn.hour,
+        _hatirlaticiAn.minute,
+      ),
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+    );
+  }
 
   Future<void> _bitkiyiPaylas() async {
     _yuklenmeIslemiBasladi.value = true;
@@ -299,7 +350,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
                                           Icons.autorenew,
                                           "Tekrarla",
                                           Text(
-                                            "Haftalık",
+                                            "Günlük",
                                             style: TextStyle(
                                               color: Renk.yaziKoyuYesil,
                                               fontWeight: FontWeight.bold,

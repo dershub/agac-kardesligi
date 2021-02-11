@@ -38,6 +38,7 @@ dependencies:
   hive_listener: ^0.1.0
   image_picker: ^0.6.7+22
   path_provider: ^1.6.27
+  rxdart: ^0.25.0
 
 #dev dependencies
 dev_dependencies:

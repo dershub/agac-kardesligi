@@ -1,14 +1,20 @@
 import 'package:agackardesligi/gerecler/listeler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_listener/hive_listener.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'gerecler/renkler.dart';
+import 'main.dart';
 import 'sayfalar/anasayfa.dart';
 import 'sayfalar/bitki_ekle.dart';
 import 'sayfalar/giris_yap.dart';
+
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
 
 class MainSayfa extends StatefulWidget {
   final bool girisYapildiMi;
@@ -41,6 +47,70 @@ class _MainSayfaState extends State<MainSayfa> {
       default:
     }
     setState(() {});
+  }
+
+  void _configureDidReceiveLocalNotificationSubject() {
+    didReceiveLocalNotificationSubject.stream
+        .listen((ReceivedNotification receivedNotification) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title)
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body)
+              : null,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).pop();
+                /* await Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        SecondPage(receivedNotification.payload),
+                  ),
+                ); */
+              },
+              child: const Text('Ok'),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  void _requestPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+    /* flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        ); */
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+    _configureDidReceiveLocalNotificationSubject();
+  }
+
+  @override
+  void dispose() {
+    didReceiveLocalNotificationSubject.close();
+    super.dispose();
   }
 
   @override
