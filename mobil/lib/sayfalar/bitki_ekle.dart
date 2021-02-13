@@ -1,18 +1,15 @@
 import 'dart:io';
 
+import '../gerecler/local_bildirim.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 import '../gerecler/listeler.dart';
 import '../gerecler/renkler.dart';
-import '../main.dart';
 import '../modeller/bitki.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
@@ -34,17 +31,6 @@ class _BitkiEkleState extends State<BitkiEkle> {
   TimeOfDay _hatirlaticiAn;
   Set _hatirlaticiPeriyotlari = {"Aylik", "Haftalik", "Günlük"};
 
-  AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
-    'your other channel id',
-    'your other channel name',
-    'your other channel description',
-    importance: Importance.max,
-    priority: Priority.high,
-  );
-
-  IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-
   void _evreSecimi(String gonderilenEvre) {
     _bitki.evre = gonderilenEvre;
     print("_evreSecimi");
@@ -64,46 +50,9 @@ class _BitkiEkleState extends State<BitkiEkle> {
     if (mounted) setState(() {});
   }
 
-  Future<void> _hatirlaticiEkle() async {
-    NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    flutterLocalNotificationsPlugin
-        //.zonedSchedule(id, title, body, scheduledDate, notificationDetails, uiLocalNotificationDateInterpretation: null, androidAllowWhileIdle: null)
-        .periodicallyShow(
-      123,
-      "Resim Hatırlatıcı",
-      "Bitkinize Resim Eklemeyi Hatırlatıyorum",
-      RepeatInterval.daily,
-      NotificationDetails(),
-      payload: "gizli bilgiler",
-    );
-    DateTime simdi = DateTime.now();
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      123,
-      "Resim Hatırlatıcı",
-      "Bitkinize Resim Eklemeyi Hatırlatıyorum",
-      tz.TZDateTime(
-        tz.local,
-        simdi.year,
-        simdi.month,
-        simdi.day,
-        _hatirlaticiAn.hour,
-        _hatirlaticiAn.minute,
-      ),
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-    );
-  }
-
   Future<void> _bitkiyiPaylas() async {
-    _yuklenmeIslemiBasladi.value = true;
+    await hatirlaticiEkle(_bitki, _hatirlaticiAn);
+    /* _yuklenmeIslemiBasladi.value = true;
     String mesaj;
     if (_resim == null)
       mesaj = "Lütfen ekleyeceğiniz bitki için resim seçin!";
@@ -141,10 +90,12 @@ class _BitkiEkleState extends State<BitkiEkle> {
       print(_bitki.resimLinki);
 
       // Spread operatörü ile bitki map eklenmeTarihi key'ine tekrar atama yapılması
-      await FirebaseFirestore.instance.collection('bitkiler').add(
-          {..._bitki.toJson(), 'eklemeTarihi': FieldValue.serverTimestamp()});
+      await FirebaseFirestore.instance
+          .collection('bitkiler')
+          .add(_bitki.toJson());
 
-      if (_hatirlaticiHabercisi.value) await _hatirlaticiEkle();
+      if (_hatirlaticiHabercisi.value)
+        await hatirlaticiEkle(_bitki, _hatirlaticiAn);
 
       mesaj = "İşlem başarıyla gerçekleşti";
     }
@@ -156,7 +107,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
     );
 
     _yuklenmeIslemiBasladi.value = false;
-    if (_yuklenmeOraniHabercisi.value > 0.9) Navigator.of(context).pop();
+    if (_yuklenmeOraniHabercisi.value > 0.9) Navigator.of(context).pop(); */
   }
 
   @override

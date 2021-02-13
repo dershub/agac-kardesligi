@@ -1,4 +1,3 @@
-import 'package:agackardesligi/gerecler/listeler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -7,6 +6,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_listener/hive_listener.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'gerecler/listeler.dart';
+import 'gerecler/local_bildirim.dart';
 import 'gerecler/renkler.dart';
 import 'main.dart';
 import 'sayfalar/anasayfa.dart';
