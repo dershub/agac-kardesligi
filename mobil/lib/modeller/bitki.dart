@@ -38,6 +38,7 @@ class Bitki {
     @required this.resimler,
   });
 
+  /// Bu açıklama olarak görünür
   Bitki.yeni({
     this.baslik = "",
     this.aciklama = "",

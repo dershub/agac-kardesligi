@@ -1,15 +1,17 @@
 import 'dart:io';
 
-import '../gerecler/local_bildirim.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../gerecler/listeler.dart';
+import '../gerecler/local_bildirim.dart';
 import '../gerecler/renkler.dart';
+import '../kontrolculer/bitki_ekle_kontrolcu.dart';
 import '../modeller/bitki.dart';
 import '../ui/bitki_ekle/body_orta_bolum/cont_alt_taraf.dart';
 import '../ui/bitki_ekle/body_ust_bolum/evre_secimi.dart';
@@ -25,11 +27,10 @@ class BitkiEkle extends StatefulWidget {
 class _BitkiEkleState extends State<BitkiEkle> {
   Bitki _bitki = Bitki.yeni();
   File _resim;
-  ValueNotifier<double> _yuklenmeOraniHabercisi = ValueNotifier<double>(0);
-  ValueNotifier<bool> _yuklenmeIslemiBasladi = ValueNotifier<bool>(false);
-  ValueNotifier<bool> _hatirlaticiHabercisi = ValueNotifier<bool>(false);
+
   TimeOfDay _hatirlaticiAn;
-  Set _hatirlaticiPeriyotlari = {"Aylik", "Haftalik", "Günlük"};
+
+  final BitkiEkleKontrolcu _bitkiEkleKontrolcu = Get.put(BitkiEkleKontrolcu());
 
   void _evreSecimi(String gonderilenEvre) {
     _bitki.evre = gonderilenEvre;
@@ -51,8 +52,10 @@ class _BitkiEkleState extends State<BitkiEkle> {
   }
 
   Future<void> _bitkiyiPaylas() async {
-    await hatirlaticiEkle(_bitki, _hatirlaticiAn);
-    /* _yuklenmeIslemiBasladi.value = true;
+    // await hatirlaticiEkle(_bitki, _hatirlaticiAn);
+    // await hatirlaticiIptalEt(_bitki);
+    _bitkiEkleKontrolcu.yuklenmeIslemiBasladiDegistir(true);
+
     String mesaj;
     if (_resim == null)
       mesaj = "Lütfen ekleyeceğiniz bitki için resim seçin!";
@@ -69,12 +72,12 @@ class _BitkiEkleState extends State<BitkiEkle> {
       yuklemeGorevi.snapshotEvents.listen((event) {
         switch (event.state) {
           case TaskState.running:
-            _yuklenmeOraniHabercisi.value =
+            _bitkiEkleKontrolcu.yuklemeOraniDegistir(
                 yuklemeGorevi.snapshot.bytesTransferred /
-                    yuklemeGorevi.snapshot.totalBytes;
+                    yuklemeGorevi.snapshot.totalBytes);
             break;
           case TaskState.success:
-            _yuklenmeOraniHabercisi.value = 1;
+            _bitkiEkleKontrolcu.yuklemeOraniDegistir(1);
             break;
           case TaskState.error:
             Fluttertoast.showToast(
@@ -94,7 +97,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
           .collection('bitkiler')
           .add(_bitki.toJson());
 
-      if (_hatirlaticiHabercisi.value)
+      if (_bitkiEkleKontrolcu.hatirlaticiAktif.isTrue)
         await hatirlaticiEkle(_bitki, _hatirlaticiAn);
 
       mesaj = "İşlem başarıyla gerçekleşti";
@@ -106,8 +109,10 @@ class _BitkiEkleState extends State<BitkiEkle> {
       toastLength: Toast.LENGTH_LONG,
     );
 
-    _yuklenmeIslemiBasladi.value = false;
-    if (_yuklenmeOraniHabercisi.value > 0.9) Navigator.of(context).pop(); */
+    _bitkiEkleKontrolcu.yuklenmeIslemiBasladiDegistir(false);
+
+    if (_bitkiEkleKontrolcu.yuklenmeOrani.value > 0.9)
+      Navigator.of(context).pop();
   }
 
   @override
@@ -227,133 +232,126 @@ class _BitkiEkleState extends State<BitkiEkle> {
                         borderRadius: BorderRadius.circular(20),
                         color: Renk.mintYesil,
                       ),
-                      child: ValueListenableBuilder<bool>(
-                        valueListenable: _hatirlaticiHabercisi,
-                        builder: (ctx, hatirlatici, w) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    // • bullet symbol => madde işareti
-                                    child: Icon(
-                                      Icons.brightness_1,
-                                      color: Renk.yesil99,
-                                      size: 10,
-                                    ),
+                      child: Obx(() {
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  // • bullet symbol => madde işareti
+                                  child: Icon(
+                                    Icons.brightness_1,
+                                    color: Renk.yesil99,
+                                    size: 10,
                                   ),
-                                  Text("Resim ekleme hatırlatıcısı"),
-                                  Expanded(
-                                    child: SwitchListTile(
-                                      value: hatirlatici,
-                                      onChanged: (v) {
-                                        _hatirlaticiHabercisi.value = v;
-                                      },
-                                    ),
+                                ),
+                                Text("Resim ekleme hatırlatıcısı"),
+                                Expanded(
+                                  child: SwitchListTile(
+                                    value: _bitkiEkleKontrolcu
+                                        .hatirlaticiAktif.value,
+                                    onChanged: (v) {
+                                      _bitkiEkleKontrolcu
+                                          .hatirlaticiAktifDegistir(v);
+                                    },
                                   ),
-                                ],
-                              ),
-                              if (hatirlatici)
-                                IntrinsicHeight(
-                                  child: contAltArkaPlan(
-                                    child: Column(
-                                      children: [
-                                        contAltRow(
-                                          Icons.watch_later_outlined,
-                                          "Saat",
-                                          InkWell(
-                                            onTap: () {
-                                              showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now(),
-                                                builder: (BuildContext context,
-                                                    Widget child) {
-                                                  return MediaQuery(
-                                                    data: MediaQuery.of(context)
-                                                        .copyWith(
-                                                      alwaysUse24HourFormat:
-                                                          true,
-                                                    ),
-                                                    child: child,
-                                                  );
-                                                },
-                                              ).then((value) => setState(() {
-                                                    _hatirlaticiAn = value;
-                                                  }));
-                                            },
-                                            child: Text(
-                                              "${_hatirlaticiAn == null ? 'Seçiniz' : _hatirlaticiAn.format(context)}",
-                                              style: TextStyle(
-                                                color: Renk.yaziKoyuYesil,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Divider(
-                                          color: Colors.white,
-                                          thickness: 3,
-                                        ),
-                                        contAltRow(
-                                          Icons.autorenew,
-                                          "Tekrarla",
-                                          Text(
-                                            "Günlük",
+                                ),
+                              ],
+                            ),
+                            if (_bitkiEkleKontrolcu.hatirlaticiAktif.isTrue)
+                              IntrinsicHeight(
+                                child: contAltArkaPlan(
+                                  child: Column(
+                                    children: [
+                                      contAltRow(
+                                        Icons.watch_later_outlined,
+                                        "Saat",
+                                        InkWell(
+                                          onTap: () {
+                                            showTimePicker(
+                                              context: context,
+                                              initialTime: TimeOfDay.now(),
+                                              builder: (BuildContext context,
+                                                  Widget child) {
+                                                return MediaQuery(
+                                                  data: MediaQuery.of(context)
+                                                      .copyWith(
+                                                    alwaysUse24HourFormat: true,
+                                                  ),
+                                                  child: child,
+                                                );
+                                              },
+                                            ).then((value) => setState(() {
+                                                  _hatirlaticiAn = value;
+                                                }));
+                                          },
+                                          child: Text(
+                                            "${_hatirlaticiAn == null ? 'Seçiniz' : _hatirlaticiAn.format(context)}",
                                             style: TextStyle(
                                               color: Renk.yaziKoyuYesil,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Divider(
+                                        color: Colors.white,
+                                        thickness: 3,
+                                      ),
+                                      contAltRow(
+                                        Icons.autorenew,
+                                        "Tekrarla",
+                                        Text(
+                                          "Günlük",
+                                          style: TextStyle(
+                                            color: Renk.yaziKoyuYesil,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                )
-                            ],
-                          );
-                        },
-                      ),
+                                ),
+                              )
+                          ],
+                        );
+                      }),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 12),
-              ValueListenableBuilder<double>(
-                valueListenable: _yuklenmeOraniHabercisi,
-                builder: (ctx, yuklenmeOrani, w) {
-                  if (yuklenmeOrani == 0 || yuklenmeOrani == 1)
-                    return SizedBox();
-                  else
-                    return Stack(
-                      children: [
-                        SizedBox(
-                          height: 48,
-                          child: LinearProgressIndicator(
-                            value: yuklenmeOrani,
-                          ),
+              Obx(() {
+                double yo = _bitkiEkleKontrolcu.yuklenmeOrani.value;
+                if (yo == 0 || yo == 1)
+                  return SizedBox();
+                else
+                  return Stack(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        child: LinearProgressIndicator(
+                          value: yo,
                         ),
-                        Positioned.fill(
-                          child: Center(
-                            child: Text("%${(yuklenmeOrani * 100).round()}"),
-                          ),
+                      ),
+                      Positioned.fill(
+                        child: Center(
+                          child: Text("%${(yo * 100).round()}"),
                         ),
-                      ],
-                    );
-                },
-              ),
+                      ),
+                    ],
+                  );
+              }),
               SizedBox(height: 12),
-              ValueListenableBuilder<bool>(
-                valueListenable: _yuklenmeIslemiBasladi,
-                builder: (ctx, yuklenmeBasladi, w) {
-                  if (yuklenmeBasladi)
-                    return SizedBox();
-                  else
-                    return paylasButonu(_bitkiyiPaylas);
-                },
-              ),
+              Obx(() {
+                if (_bitkiEkleKontrolcu.yuklenmeIslemiBasladi.isTrue)
+                  return SizedBox();
+                else
+                  return paylasButonu(_bitkiyiPaylas);
+              }),
               SizedBox(height: 12),
             ],
           ),

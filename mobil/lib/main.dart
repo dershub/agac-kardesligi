@@ -18,8 +18,8 @@ void main() async {
   await Hive.initFlutter('bitkihive');
   // Widgetları ekrana getirmeye hazır olduğumuzdan emin oluyoruz
   tz.initializeTimeZones();
-  final String timeZoneName = await platform.invokeMethod('getTimeZoneName');
-  tz.setLocalLocation(tz.getLocation(timeZoneName));
+//  final String timeZoneName = await platform.invokeMethod('getTimeZoneName');
+  tz.setLocalLocation(tz.getLocation("Europe/Istanbul"));
 
   String yol = (await getApplicationDocumentsDirectory()).path;
   (await Hive.openBox('ayarlar')).put('yol', yol);

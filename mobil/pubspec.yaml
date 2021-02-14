@@ -39,6 +39,7 @@ dependencies:
   image_picker: ^0.6.7+22
   path_provider: ^1.6.27
   rxdart: ^0.25.0
+  get: ^3.25.4
 
 #dev dependencies
 dev_dependencies:

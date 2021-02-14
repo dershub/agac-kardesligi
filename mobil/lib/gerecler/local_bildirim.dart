@@ -9,8 +9,7 @@ import '../mainsayfa.dart';
 import '../modeller/bitki.dart';
 import 'fonksionlar.dart';
 
-const MethodChannel platform =
-    MethodChannel('dexterx.dev/flutter_local_notifications_example');
+const MethodChannel platform = MethodChannel('com.dershub.agackardesligi');
 
 class ReceivedNotification {
   ReceivedNotification({
@@ -65,6 +64,11 @@ Future yerelBildirimOnAyarlariYap() async {
   });
 }
 
+Future<void> hatirlaticiIptalEt(Bitki bitki) async {
+  await flutterLocalNotificationsPlugin
+      .cancel(dateTimeToIntId(bitki.eklemeTarihi));
+}
+
 Future<void> hatirlaticiEkle(Bitki bitki, TimeOfDay _hatirlaticiAn) async {
   AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails(
@@ -94,9 +98,10 @@ Future<void> hatirlaticiEkle(Bitki bitki, TimeOfDay _hatirlaticiAn) async {
       _hatirlaticiAn.minute,
     ),
     platformChannelSpecifics,
+    payload: "resim-ekle-sayfasina-git",
     androidAllowWhileIdle: true,
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-    matchDateTimeComponents: DateTimeComponents.time,
+    matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
   );
 }
