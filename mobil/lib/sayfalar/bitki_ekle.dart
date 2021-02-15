@@ -92,10 +92,15 @@ class _BitkiEkleState extends State<BitkiEkle> {
 
       print(_bitki.resimLinki);
 
-      // Spread operatörü ile bitki map eklenmeTarihi key'ine tekrar atama yapılması
+      //TODO Daha sonra transaction olarak düzenlenecek
       await FirebaseFirestore.instance
           .collection('bitkiler')
           .add(_bitki.toJson());
+
+      await FirebaseFirestore.instance
+          .collection('genel-bilgiler')
+          .doc('eklenen-bitkiler')
+          .update({'toplam${_bitki.evre}Sayisi': FieldValue.increment(1)});
 
       if (_bitkiEkleKontrolcu.hatirlaticiAktif.isTrue)
         await hatirlaticiEkle(_bitki, _hatirlaticiAn);
