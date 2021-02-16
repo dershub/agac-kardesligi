@@ -1,4 +1,3 @@
-import 'package:agackardesligi/mainsayfa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'gerecler/local_bildirim.dart';
+import 'mainsayfa.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -24,6 +24,7 @@ void main() async {
   String yol = (await getApplicationDocumentsDirectory()).path;
   (await Hive.openBox('ayarlar')).put('yol', yol);
   (await Hive.openBox('mainsayfa')).put('aktifSayfa', 0);
+  await Hive.openBox('users');
 
   // Firebase ilklendirme
   await Firebase.initializeApp();

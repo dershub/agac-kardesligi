@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:agackardesligi/gerecler/fonksionlar.dart';
 import 'package:agackardesligi/gerecler/renkler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +18,30 @@ Widget paylasimArkaPlan({Widget resim, altSatir}) {
 }
 
 //2- Paylasim Resim Bölümü
-Widget paylasimResim(resimUrl) {
-  return Container(
-    margin: EdgeInsets.all(10),
-    alignment: Alignment.bottomLeft,
-    height: 150,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      color: Renk.koyuGri,
-      image: DecorationImage(
-        image: NetworkImage(resimUrl),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child: Center(),
+Widget paylasimResim(String resimUrl) {
+  return FutureBuilder<String>(
+    future: checkImagePath('http://via.placeholder.com/350x150'),
+    builder: (context, snapshot) {
+      bool resimGeldi =
+          snapshot.hasData && !snapshot.data.startsWith(':error:');
+
+      return Container(
+        margin: EdgeInsets.all(10),
+        alignment: Alignment.bottomLeft,
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Renk.koyuGri,
+          image: resimGeldi
+              ? DecorationImage(
+                  image: FileImage(File(snapshot.data)),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: Center(child: resimGeldi ? null : CircularProgressIndicator()),
+      );
+    },
   );
 }
 
