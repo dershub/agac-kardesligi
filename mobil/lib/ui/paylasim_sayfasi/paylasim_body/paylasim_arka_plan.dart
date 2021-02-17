@@ -20,7 +20,7 @@ Widget paylasimArkaPlan({Widget resim, altSatir}) {
 //2- Paylasim Resim Bölümü
 Widget paylasimResim(String resimUrl) {
   return FutureBuilder<String>(
-    future: checkImagePath('http://via.placeholder.com/350x150'),
+    future: checkImagePath(resimUrl),
     builder: (context, snapshot) {
       bool resimGeldi =
           snapshot.hasData && !snapshot.data.startsWith(':error:');
@@ -69,26 +69,38 @@ Widget paylasimAltRow({String ekleyenID, String dikilen, int begeniSayisi}) {
       children: [
         Expanded(
           flex: 2,
-          child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('kullanicilar')
-                .doc(ekleyenID)
-                .get(),
+          child: FutureBuilder<Map>(
+            future: checkUser(ekleyenID),
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return LinearProgressIndicator();
               else {
-                Map kullanici = snapshot.data.data() ??
-                    {
-                      'photoUrl':
-                          "https://i.pinimg.com/originals/a9/61/55/a961559e319e9bdc6ceaf71de13aa596.jpg",
-                      'displayName': "Anonym",
-                    };
+                Map kullanici = snapshot.data;
+
                 return Row(
                   children: [
                     Expanded(
                       child: CircleAvatar(
-                        child: Image.network(kullanici['photoUrl']),
+                        backgroundColor: Colors.amber,
+                        child: FutureBuilder<String>(
+                          future: checkImagePath(kullanici['photoUrl']),
+                          builder: (context, snapshot) {
+                            bool resimGeldi = snapshot.hasData &&
+                                !snapshot.data.startsWith(':error:');
+
+                            return resimGeldi
+                                ? AspectRatio(
+                                    aspectRatio: 1,
+                                    child: ClipOval(
+                                      child: Image.file(
+                                        File(snapshot.data),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                : CircularProgressIndicator();
+                          },
+                        ),
                       ),
                     ),
                     Expanded(

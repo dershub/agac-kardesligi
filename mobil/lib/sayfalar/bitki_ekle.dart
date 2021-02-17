@@ -39,8 +39,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
   }
 
   Future<void> _resimSec() async {
-    PickedFile secilenResim =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+    PickedFile secilenResim = await ImagePicker()
+        .getImage(source: ImageSource.gallery, maxWidth: 600);
 
     if (secilenResim != null)
       _resim = File(secilenResim.path);
@@ -66,8 +66,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
       mesaj =
           "Lütfen ekleyeceğiniz bitki için en az 40 karakter uzunluğunda bir açıklama girin!";
     else {
-      Reference ref =
-          FirebaseStorage.instance.ref('bitki-resimleri/bitkiresimi.jpg');
+      Reference ref = FirebaseStorage.instance
+          .ref('bitki-resimleri/' + _resim.path.split('/').last);
       UploadTask yuklemeGorevi = ref.putFile(_resim);
       yuklemeGorevi.snapshotEvents.listen((event) {
         switch (event.state) {
