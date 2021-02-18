@@ -23,6 +23,22 @@ Future<Map> checkUser(String uid) async {
         .doc(uid)
         .get();
 
+    //Hive TimeStamp tür dönüşümü için hata verirse çözüm denemesi
+    /*
+   print(dsUser.data()['oturumAcmaTarihi']);
+    if (dsUser.exists) {
+      userMap = dsUser.data();
+      (userMap['oturumAcmaTarihi'] ?? [])
+          .map((e) => e.map((k, v) => MapEntry(k, v.toDate())))
+          .toList()
+          .cast<dynamic>();
+      (userMap['kayitTarihi'] ?? [])
+          .map((e) => e.map((k, v) => MapEntry(k, v.toDate())))
+          .toList()
+          .cast<dynamic>();
+      await userBox.put(uid, userMap);
+    } 
+  */
     if (dsUser.exists) {
       await userBox.put(uid, dsUser.data());
 
