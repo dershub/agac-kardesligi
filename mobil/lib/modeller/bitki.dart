@@ -25,6 +25,7 @@ class Bitki {
   String evre;
   String ekleyen;
   List<Resim> resimler;
+  List<String> begenenler;
 
   Bitki({
     @required this.id,
@@ -36,6 +37,7 @@ class Bitki {
     @required this.evre,
     @required this.ekleyen,
     @required this.resimler,
+    @required this.begenenler,
   });
 
   /// Bu açıklama olarak görünür
@@ -44,6 +46,7 @@ class Bitki {
     this.aciklama = "",
     this.evre = "Tohum",
     this.resimler = const [],
+    this.begenenler = const [],
   }) {
     this.isim = Liste.bitkiIsimleri.first;
     this.eklemeTarihi = DateTime.now();
@@ -64,6 +67,8 @@ class Bitki {
         .map((e) => Resim.fromJson(e))
         .toList()
         .cast<Resim>();
+
+    this.begenenler = jsonData['begenenler'] ?? [];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +81,7 @@ class Bitki {
       "evre": this.evre,
       "ekleyen": this.ekleyen,
       "resimler": this.resimler.map((e) => e.toJson()).toList(),
+      "begenenler": this.begenenler,
     };
   }
 }

@@ -24,11 +24,11 @@ class _GirisYapState extends State<GirisYap> {
       }
       final GoogleSignInAccount googleHesabi = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleDogrulama =
-      await googleHesabi.authentication;
+          await googleHesabi.authentication;
 
       // Create a new credential
       final GoogleAuthCredential kimlikBilgileri =
-      GoogleAuthProvider.credential(
+          GoogleAuthProvider.credential(
         accessToken: googleDogrulama.accessToken,
         idToken: googleDogrulama.idToken,
       );
@@ -50,13 +50,24 @@ class _GirisYapState extends State<GirisYap> {
             'photoUrl': FirebaseAuth.instance.currentUser.photoURL,
             'oturumAcmaTarihi': FieldValue.serverTimestamp(),
           });
-        else
-          await dr.set({
+        else {
+          WriteBatch writeBatch = FirebaseFirestore.instance.batch();
+
+          writeBatch.set(dr, {
             'displayName': FirebaseAuth.instance.currentUser.displayName,
             'email': FirebaseAuth.instance.currentUser.email,
             'photoUrl': FirebaseAuth.instance.currentUser.photoURL,
             'kayitTarihi': FieldValue.serverTimestamp(),
           });
+
+          writeBatch.update(
+              FirebaseFirestore.instance
+                  .collection('genel-bilgiler')
+                  .doc('kullanici-sayilari'),
+              {'ogrenci': FieldValue.increment(1)});
+
+          await writeBatch.commit();
+        }
 
         Navigator.popUntil(context, (route) => route.isFirst);
       } catch (e) {

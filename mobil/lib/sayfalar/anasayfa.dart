@@ -14,6 +14,7 @@ class Anasayfa extends StatelessWidget {
   Widget build(BuildContext context) {
     final AnasayfaKontrolcu anasayfaKontrolcu = Get.put(AnasayfaKontrolcu());
     anasayfaKontrolcu.bitkileriCek();
+    anasayfaKontrolcu.bilgileriCek();
 
     getApplicationDocumentsDirectory().then((value) => print(value));
 
@@ -34,11 +35,7 @@ class Anasayfa extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: paylasimArkaPlan(
                             resim: paylasimResim(bitki.resimLinki),
-                            altSatir: paylasimAltRow(
-                              ekleyenID: bitki.ekleyen,
-                              dikilen: bitki.evre,
-                              begeniSayisi: 25,
-                            ),
+                            altSatir: paylasimAltRow(bitki: bitki),
                           ),
                         ),
                     ],

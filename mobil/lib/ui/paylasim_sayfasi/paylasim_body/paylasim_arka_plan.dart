@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:agackardesligi/gerecler/fonksionlar.dart';
 import 'package:agackardesligi/gerecler/renkler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:agackardesligi/modeller/bitki.dart';
 import 'package:flutter/material.dart';
 
 //1- Paylasim ArkaPlan Container
-Widget paylasimArkaPlan({Widget resim, altSatir}) {
+Widget paylasimArkaPlan({Widget resim, Widget altSatir}) {
   return Container(
     margin: EdgeInsets.only(left: 15, right: 15),
     decoration: BoxDecoration(
@@ -60,9 +60,7 @@ Widget paylasimEtiket({String etiket}) {
 }
 
 //4-Paylasim Alt Satır
-Widget paylasimAltRow({String ekleyenID, String dikilen, int begeniSayisi}) {
-  print("ekleyenID");
-  print(ekleyenID);
+Widget paylasimAltRow({Bitki bitki}) {
   return Padding(
     padding: EdgeInsets.only(top: 15, bottom: 15, right: 15),
     child: Row(
@@ -70,7 +68,7 @@ Widget paylasimAltRow({String ekleyenID, String dikilen, int begeniSayisi}) {
         Expanded(
           flex: 2,
           child: FutureBuilder<Map>(
-            future: checkUser(ekleyenID),
+            future: checkUser(bitki.ekleyen),
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return LinearProgressIndicator();
@@ -112,10 +110,12 @@ Widget paylasimAltRow({String ekleyenID, String dikilen, int begeniSayisi}) {
                               color: Colors.black, fontWeight: FontWeight.bold),
                           children: <TextSpan>[
                             TextSpan(
-                                text: dikilen,
-                                style: TextStyle(
-                                    color: Renk.ustBilgiYesilYazi,
-                                    fontWeight: FontWeight.bold)),
+                              text: bitki.evre,
+                              style: TextStyle(
+                                color: Renk.ustBilgiYesilYazi,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             TextSpan(text: " dikti."),
                           ],
                         ),
@@ -131,7 +131,7 @@ Widget paylasimAltRow({String ekleyenID, String dikilen, int begeniSayisi}) {
           child: Padding(
             padding: const EdgeInsets.only(right: 5.0),
             child: Text(
-              "$begeniSayisi",
+              "${bitki.begenenler.length}",
               textAlign: TextAlign.end,
               style: TextStyle(
                 color: Renk.ustBilgiYesilYazi.withOpacity(0.8),
