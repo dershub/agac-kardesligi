@@ -3,11 +3,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../modeller/bitki.dart';
-import '../ui/paylasim_sayfasi/paylasim.dart';
 import '../kontrolculer/anasayfa_kontrolcu.dart';
-import '../ui/paylasim_sayfasi/paylasim_body/paylasim_arka_plan.dart';
+import '../modeller/bitki.dart';
 import '../ui/paylasim_sayfasi/paylasim_ust/ust_bilgi.dart';
+import '../ui/paylasim_sayfasi/paylasim_widget.dart';
 import '../ui/safe_arka.dart';
 
 class Anasayfa extends StatelessWidget {
@@ -34,7 +33,7 @@ class Anasayfa extends StatelessWidget {
                       for (Bitki bitki in anasayfaKontrolcu.bitkiler)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Paylasim(bitki: bitki),
+                          child: PaylasimWidget(bitki: bitki),
                           /* paylasimArkaPlan(
                             resim: paylasimResim(bitki.resimLinki),
                             altSatir: paylasimAltRow(bitki: bitki)),,*/

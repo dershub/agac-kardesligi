@@ -1,6 +1,7 @@
-import 'package:agackardesligi/modeller/bitki.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+
+import '../modeller/bitki.dart';
 
 class AnasayfaKontrolcu extends GetxController {
   RxList<Bitki> bitkiler = <Bitki>[].obs;

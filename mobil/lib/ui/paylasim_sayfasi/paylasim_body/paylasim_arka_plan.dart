@@ -51,7 +51,9 @@ Widget paylasimEtiket({String etiket}) {
     margin: EdgeInsets.all(10),
     padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15), color: Renk.koyuYesil),
+      borderRadius: BorderRadius.circular(15),
+      color: Renk.koyuYesil,
+    ),
     child: Text(
       etiket,
       style: TextStyle(fontSize: 14, color: Colors.white),
@@ -59,7 +61,7 @@ Widget paylasimEtiket({String etiket}) {
   );
 }
 
-//4-Paylasim Alt Satır
+// 4-Paylasim Alt Satır
 Widget paylasimAltRow({Bitki bitki}) {
   return Padding(
     padding: EdgeInsets.only(top: 15, bottom: 15, right: 15),

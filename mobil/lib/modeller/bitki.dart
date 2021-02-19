@@ -68,7 +68,7 @@ class Bitki {
         .toList()
         .cast<Resim>();
 
-    this.begenenler = jsonData['begenenler'] ?? [];
+    this.begenenler = (jsonData['begenenler'] ?? []).cast<String>();
   }
 
   Map<String, dynamic> toJson() {
