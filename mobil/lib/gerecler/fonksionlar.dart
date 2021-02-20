@@ -15,30 +15,12 @@ Future<Map> checkUser(String uid) async {
 
   if (userBox.containsKey(uid)) {
     userMap = userBox.get(uid);
-    print("kullanıcı veritabanında var: $uid");
   } else {
-    print("kullanıcı veritabanında yok: $uid");
     DocumentSnapshot dsUser = await FirebaseFirestore.instance
         .collection('kullanicilar')
         .doc(uid)
         .get();
 
-    //Hive TimeStamp tür dönüşümü için hata verirse çözüm denemesi
-    /*
-   print(dsUser.data()['oturumAcmaTarihi']);
-    if (dsUser.exists) {
-      userMap = dsUser.data();
-      (userMap['oturumAcmaTarihi'] ?? [])
-          .map((e) => e.map((k, v) => MapEntry(k, v.toDate())))
-          .toList()
-          .cast<dynamic>();
-      (userMap['kayitTarihi'] ?? [])
-          .map((e) => e.map((k, v) => MapEntry(k, v.toDate())))
-          .toList()
-          .cast<dynamic>();
-      await userBox.put(uid, userMap);
-    } 
-  */
     if (dsUser.exists) {
       await userBox.put(uid, dsUser.data());
 
@@ -77,7 +59,6 @@ Future<String> checkImagePath(String url) async {
         if (response.headers['content-type'].startsWith('image')) {
           File file = File(imageDirectory.path);
           file.writeAsBytesSync(response.bodyBytes);
-          print(response.bodyBytes);
           return imageDirectory.path;
         } else
           return ":error: url does not contain image";
@@ -91,4 +72,28 @@ Future<String> checkImagePath(String url) async {
       return ":error: catch: $e";
     }
   }
+}
+
+String zamanFarkiBul(DateTime dt) {
+  String sure;
+  Duration duration = DateTime.now().difference(dt);
+
+  if (duration.inDays < 1) {
+    if (duration.inHours < 1) {
+      if (duration.inMinutes < 1)
+        sure = "${duration.inSeconds} Saniye";
+      else
+        sure = "${duration.inMinutes} Dakika";
+    } else
+      sure = "${duration.inHours} Saat";
+  } else if (duration.inDays < 7) {
+    sure = "${duration.inDays} Gün";
+  } else if (duration.inDays < 30) {
+    sure = "${(duration.inDays / 7).floor()} Hafta";
+  } else if (duration.inDays < 365) {
+    sure = "${(duration.inDays / 30).floor()} Ay";
+  } else {
+    sure = "${(duration.inDays / 365).floor()} Yıl";
+  }
+  return sure;
 }

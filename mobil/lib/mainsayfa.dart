@@ -44,7 +44,6 @@ class _MainSayfaState extends State<MainSayfa> {
         return Anasayfa();
       case 3:
         return GirisYap();
-        break;
       default:
     }
     setState(() {});

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -19,7 +20,13 @@ class Anasayfa extends StatelessWidget {
     getApplicationDocumentsDirectory().then((value) => print(value));
 
     // /Users/ma/Library/Developer/CoreSimulator/Devices/5E091F87-72A0-46C6-92B2-AF418ECA3BBC/data/Containers/Data/Application/D75A774C-DE69-44B5-AB3C-80F7E019CA28/Documents/cached_images/ilgili_resim.jpg
+/* 
+    Bitki bitki1 = Bitki();
+    Bitki bitki2 = Bitki();
 
+    FirebaseFirestore firestore1 = FirebaseFirestore.instance;
+    FirebaseFirestore firestore2 = FirebaseFirestore.instance;
+ */
     return SafeArka(
       child: Scaffold(
         body: Center(
