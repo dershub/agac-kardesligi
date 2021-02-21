@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Resim {
   String link;
+  String aciklama;
   DateTime tarih;
-  List<String> begenenler;
 
   Resim.fromJson(Map<String, dynamic> jsonData) {
     this.link = jsonData['link'];
+    this.aciklama = jsonData['aciklama'];
     this.tarih = (jsonData['tarih'] as Timestamp).toDate();
-    this.begenenler = jsonData['begenenler'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       "link": this.link,
       "tarih": this.tarih,
-      "begenenler": this.begenenler,
+      "aciklama": this.aciklama,
     };
   }
 }

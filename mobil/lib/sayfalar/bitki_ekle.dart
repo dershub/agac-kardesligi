@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:agackardesligi/ui/resim_ekle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -36,19 +37,6 @@ class _BitkiEkleState extends State<BitkiEkle> {
     _bitki.evre = gonderilenEvre;
     print("_evreSecimi");
     print(_bitki.evre);
-  }
-
-  Future<void> _resimSec() async {
-    PickedFile secilenResim = await ImagePicker()
-        .getImage(source: ImageSource.gallery, maxWidth: 600);
-
-    if (secilenResim != null)
-      _resim = File(secilenResim.path);
-    else
-      _resim = null;
-
-    await Future.delayed(Duration(seconds: 3));
-    if (mounted) setState(() {});
   }
 
   Future<void> _bitkiyiPaylas() async {
@@ -133,46 +121,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Stack(
-                        children: [
-                          DottedBorder(
-                            color: Colors.black26,
-                            strokeWidth: 2,
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(18),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Renk.acikGri,
-                                borderRadius: BorderRadius.circular(18),
-                                image: _resim == null
-                                    ? null
-                                    : DecorationImage(
-                                        image: FileImage(_resim),
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                              child: FlatButton(
-                                onPressed: _resimSec,
-                                child: Center(),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: InkWell(
-                              onTap: _resimSec,
-                              child: Icon(
-                                Icons.add_circle,
-                                color: Renk.yesil99,
-                                size: 36,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: ResimEkle(
+                      resimDegisti: (resim) => _resim = resim,
                     ),
                   ),
                   SizedBox(width: 8),
