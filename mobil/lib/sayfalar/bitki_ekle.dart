@@ -64,9 +64,6 @@ class _BitkiEkleState extends State<BitkiEkle> {
                 yuklemeGorevi.snapshot.bytesTransferred /
                     yuklemeGorevi.snapshot.totalBytes);
             break;
-          case TaskState.success:
-            _bitkiEkleKontrolcu.yuklemeOraniDegistir(1);
-            break;
           case TaskState.error:
             Fluttertoast.showToast(
                 msg: "Resim sunucuya yüklenirken hata oluştu");
@@ -80,7 +77,7 @@ class _BitkiEkleState extends State<BitkiEkle> {
 
       print(_bitki.resimLinki);
 
-      //TODO Daha sonra transaction olarak düzenlenecek
+      /* 
       await FirebaseFirestore.instance
           .collection('bitkiler')
           .add(_bitki.toJson());
@@ -88,7 +85,17 @@ class _BitkiEkleState extends State<BitkiEkle> {
       await FirebaseFirestore.instance
           .collection('genel-bilgiler')
           .doc('eklenen-bitkiler')
-          .update({'toplam${_bitki.evre}Sayisi': FieldValue.increment(1)});
+          .update({'toplam${_bitki.evre}Sayisi': FieldValue.increment(1)}); */
+
+      FirebaseFirestore fb = FirebaseFirestore.instance;
+      WriteBatch writeBatch = FirebaseFirestore.instance.batch();
+
+      writeBatch.set(fb.collection('bitkiler').doc(), _bitki.toJson());
+
+      writeBatch.update(fb.collection('genel-bilgiler').doc('eklenen-bitkiler'),
+          {'toplam${_bitki.evre}Sayisi': FieldValue.increment(1)});
+
+      await writeBatch.commit();
 
       if (_bitkiEkleKontrolcu.hatirlaticiAktif.isTrue)
         await hatirlaticiEkle(_bitki, _hatirlaticiAn);
@@ -101,6 +108,8 @@ class _BitkiEkleState extends State<BitkiEkle> {
       timeInSecForIosWeb: 3,
       toastLength: Toast.LENGTH_LONG,
     );
+
+    _bitkiEkleKontrolcu.yuklemeOraniDegistir(1);
 
     _bitkiEkleKontrolcu.yuklenmeIslemiBasladiDegistir(false);
 

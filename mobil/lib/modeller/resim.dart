@@ -5,6 +5,8 @@ class Resim {
   String aciklama;
   DateTime tarih;
 
+  Resim(this.link, this.aciklama, this.tarih);
+
   Resim.fromJson(Map<String, dynamic> jsonData) {
     this.link = jsonData['link'];
     this.aciklama = jsonData['aciklama'];
