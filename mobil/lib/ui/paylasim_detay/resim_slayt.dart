@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,18 @@ class ResimSlayt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> resimler = [
+      bitki.resimLinki,
+      ...bitki.resimler.map((e) => e.link)
+    ];
+
+    final List<String> tarihler = [
+      "${bitki.eklemeTarihi}".split(' ').first,
+      ...bitki.resimler.map((e) => "${e.tarih}".split(' ').first)
+    ];
+
+    final ValueNotifier<int> resimIndexHaberci = ValueNotifier<int>(0);
+
     return Column(
       children: [
         Stack(
@@ -21,19 +34,24 @@ class ResimSlayt extends StatelessWidget {
                 aspectRatio: 1.5,
                 child: SizedBox(
                   width: double.maxFinite,
-                  child: FutureBuilder(
-                    future: checkImagePath(bitki.resimLinki),
-                    builder: (_, snapshot) {
-                      bool resimGeldi = snapshot.hasData &&
-                          !snapshot.data.startsWith(':error:');
+                  child: ValueListenableBuilder<int>(
+                    valueListenable: resimIndexHaberci,
+                    builder: (_, resimIndex, __) {
+                      return FutureBuilder(
+                        future: checkImagePath(resimler[resimIndex]),
+                        builder: (_, snapshot) {
+                          bool resimGeldi = snapshot.hasData &&
+                              !snapshot.data.startsWith(':error:');
 
-                      if (resimGeldi)
-                        return Image.file(
-                          File(snapshot.data),
-                          fit: BoxFit.cover,
-                        );
-                      return Center(
-                        child: CircularProgressIndicator(),
+                          if (resimGeldi)
+                            return Image.file(
+                              File(snapshot.data),
+                              fit: BoxFit.cover,
+                            );
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       );
                     },
                   ),
@@ -136,13 +154,31 @@ class ResimSlayt extends StatelessWidget {
           color: Colors.grey.shade200,
           child: Row(
             children: [
-              Text("${bitki.eklemeTarihi}".split(' ').first),
+              IconButton(
+                iconSize: 48,
+                icon: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(math.pi),
+                  child: Icon(
+                    Icons.next_plan,
+                  ),
+                ),
+                onPressed: () {
+                  if (resimIndexHaberci.value > 0) resimIndexHaberci.value--;
+                },
+              ),
+              Spacer(),
+              Text(tarihler[resimIndexHaberci.value]),
               Spacer(),
               IconButton(
+                iconSize: 48,
                 icon: Icon(
-                  Icons.play_arrow_outlined,
+                  Icons.next_plan,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (resimIndexHaberci.value < resimler.length - 1)
+                    resimIndexHaberci.value++;
+                },
               ),
             ],
           ),

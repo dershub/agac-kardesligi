@@ -72,6 +72,16 @@ class PaylasimDetayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool bitkiSahibi =
+        bitki.ekleyen == FirebaseAuth.instance.currentUser.uid;
+
+    /* final bool bugunResimEklendi =
+        "${bitki.resimler.last.tarih}".split(' ').first ==
+            "${DateTime.now()}".split(' ').first; */
+
+    final bool son24Saat =
+        DateTime.now().difference(bitki.resimler.last.tarih).inHours > 24;
+
     return Container(
       color: Colors.white38,
       child: SafeArea(
@@ -100,7 +110,10 @@ class PaylasimDetayWidget extends StatelessWidget {
                     "${bitki.begenenler.length} Beğenme",
                   ),
                 ),
-                if (bitki.ekleyen == FirebaseAuth.instance.currentUser.uid)
+                if (bitkiSahibi && !son24Saat)
+                  Text(
+                      "son 24 saatte resim eklediğiniz için teşekkür ederiz ${DateTime.now().difference(bitki.resimler.last.tarih).inHours}"),
+                if (bitkiSahibi && son24Saat)
                   Container(
                     height: 100,
                     color: Colors.white,
@@ -111,7 +124,8 @@ class PaylasimDetayWidget extends StatelessWidget {
                         builder: (_, yuklemeOrani, __) {
                           if (yuklemeOrani > 0 && yuklemeOrani < 1)
                             return CircularProgressIndicator(
-                                value: yuklemeOrani != 1 ? yuklemeOrani : null);
+                              value: yuklemeOrani != 1 ? yuklemeOrani : null,
+                            );
                           else
                             return Row(
                               children: [
