@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../gerecler/fonksionlar.dart';
 import '../../modeller/bitki.dart';
@@ -15,12 +18,16 @@ class ResimSlayt extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> resimler = [
       bitki.resimLinki,
-      ...bitki.resimler.map((e) => e.link)
+      ...bitki.resimler
+          .where((e) => (e.sikayetler ?? []).length < 3)
+          .map((e) => e.link)
     ];
 
     final List<String> tarihler = [
       "${bitki.eklemeTarihi}".split(' ').first,
-      ...bitki.resimler.map((e) => "${e.tarih}".split(' ').first)
+      ...bitki.resimler
+          .where((e) => (e.sikayetler ?? []).length < 3)
+          .map((e) => "${e.tarih}".split(' ').first)
     ];
 
     final ValueNotifier<int> resimIndexHaberci = ValueNotifier<int>(0);
@@ -30,6 +37,8 @@ class ResimSlayt extends StatelessWidget {
         Stack(
           children: [
             Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               child: AspectRatio(
                 aspectRatio: 1.5,
                 child: SizedBox(
@@ -44,9 +53,15 @@ class ResimSlayt extends StatelessWidget {
                               !snapshot.data.startsWith(':error:');
 
                           if (resimGeldi)
-                            return Image.file(
-                              File(snapshot.data),
-                              fit: BoxFit.cover,
+                            return Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: FileImage(File(snapshot.data)),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(),
                             );
                           return Center(
                             child: CircularProgressIndicator(),
@@ -152,35 +167,103 @@ class ResimSlayt extends StatelessWidget {
         SizedBox(height: 8),
         Container(
           color: Colors.grey.shade200,
-          child: Row(
-            children: [
-              IconButton(
-                iconSize: 48,
-                icon: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(math.pi),
-                  child: Icon(
-                    Icons.next_plan,
+          child: SizedBox(
+            height: 60,
+            child: Row(
+              children: [
+                IconButton(
+                  iconSize: 48,
+                  icon: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(math.pi),
+                    child: Icon(
+                      Icons.next_plan,
+                    ),
                   ),
+                  onPressed: () {
+                    if (resimIndexHaberci.value > 0) resimIndexHaberci.value--;
+                  },
                 ),
-                onPressed: () {
-                  if (resimIndexHaberci.value > 0) resimIndexHaberci.value--;
-                },
-              ),
-              Spacer(),
-              Text(tarihler[resimIndexHaberci.value]),
-              Spacer(),
-              IconButton(
-                iconSize: 48,
-                icon: Icon(
-                  Icons.next_plan,
+                Spacer(),
+                ValueListenableBuilder<int>(
+                  valueListenable: resimIndexHaberci,
+                  builder: (_, resimIndex, __) {
+                    String uid = FirebaseAuth.instance.currentUser.uid;
+
+                    bool sikayetEdildi =
+                        bitki.resimler[resimIndex].sikayetler.contains(uid);
+
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Text(tarihler[resimIndex]),
+                          ),
+                        ),
+                        if (!sikayetEdildi)
+                          SizedBox(
+                            height: 20,
+                            child: TextButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (c) => AlertDialog(
+                                    title: Text("Şikayet Uyarısı"),
+                                    content: Text(
+                                        "Resmi şikayet etmek istediğinizden emin misiniz?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Vazgeç"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          bitki.resimler[resimIndex + 1]
+                                              .sikayetler
+                                              .add(uid);
+
+                                          await FirebaseFirestore.instance
+                                              .collection('bitkiler')
+                                              .doc(bitki.id)
+                                              .update(bitki.toJson());
+
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Şikayetiniz ulaştı, katkınızdan dolayı teşekkür ederiz!");
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Şikayet Et"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Text("şikayet et"),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 0,
+                                  horizontal: 0,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
-                onPressed: () {
-                  if (resimIndexHaberci.value < resimler.length - 1)
-                    resimIndexHaberci.value++;
-                },
-              ),
-            ],
+                Spacer(),
+                IconButton(
+                  iconSize: 48,
+                  icon: Icon(Icons.next_plan),
+                  onPressed: () {
+                    if (resimIndexHaberci.value < resimler.length - 1)
+                      resimIndexHaberci.value++;
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],

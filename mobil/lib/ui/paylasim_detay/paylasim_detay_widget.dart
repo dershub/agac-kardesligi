@@ -49,7 +49,8 @@ class PaylasimDetayWidget extends StatelessWidget {
       await yuklemeGorevi.whenComplete(() {});
       String resimLinki = await ref.getDownloadURL();
 
-      Resim resim = Resim(resimLinki, _aciklamaHaberci.value, DateTime.now());
+      Resim resim =
+          Resim(resimLinki, _aciklamaHaberci.value, DateTime.now(), []);
 
       bitki.resimler.add(resim);
 
@@ -79,8 +80,10 @@ class PaylasimDetayWidget extends StatelessWidget {
         "${bitki.resimler.last.tarih}".split(' ').first ==
             "${DateTime.now()}".split(' ').first; */
 
-    final bool son24Saat =
-        DateTime.now().difference(bitki.resimler.last.tarih).inHours > 24;
+    int gecenSaatSayisi =
+        DateTime.now().difference(bitki.resimler.last.tarih).inHours;
+
+    final bool son24Saat = gecenSaatSayisi > 24;
 
     return Container(
       color: Colors.white38,
@@ -110,9 +113,10 @@ class PaylasimDetayWidget extends StatelessWidget {
                     "${bitki.begenenler.length} Beğenme",
                   ),
                 ),
+                SizedBox(height: 8),
                 if (bitkiSahibi && !son24Saat)
                   Text(
-                      "son 24 saatte resim eklediğiniz için teşekkür ederiz ${DateTime.now().difference(bitki.resimler.last.tarih).inHours}"),
+                      "Son 24 saatte resim eklediğiniz için teşekkür ederiz. Sonraki resim eklemek için kalan süreniz: ${24 - gecenSaatSayisi} saat"),
                 if (bitkiSahibi && son24Saat)
                   Container(
                     height: 100,
@@ -122,10 +126,8 @@ class PaylasimDetayWidget extends StatelessWidget {
                     child: ValueListenableBuilder<double>(
                         valueListenable: _yuklemeOraniHaberci,
                         builder: (_, yuklemeOrani, __) {
-                          if (yuklemeOrani > 0 && yuklemeOrani < 1)
-                            return CircularProgressIndicator(
-                              value: yuklemeOrani != 1 ? yuklemeOrani : null,
-                            );
+                          if (yuklemeOrani > 0 && yuklemeOrani < 0.99)
+                            return CircularProgressIndicator();
                           else
                             return Row(
                               children: [
