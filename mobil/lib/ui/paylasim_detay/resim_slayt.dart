@@ -190,8 +190,10 @@ class ResimSlayt extends StatelessWidget {
                   builder: (_, resimIndex, __) {
                     String uid = FirebaseAuth.instance.currentUser.uid;
 
-                    bool sikayetEdildi =
-                        bitki.resimler[resimIndex].sikayetler.contains(uid);
+                    bool sikayetEdildi = resimIndex > 0
+                        ? bitki.resimler[resimIndex - 1].sikayetler
+                            .contains(uid)
+                        : true;
 
                     return Column(
                       children: [
@@ -220,14 +222,17 @@ class ResimSlayt extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          bitki.resimler[resimIndex + 1]
+                                          bitki.resimler[resimIndex - 1]
                                               .sikayetler
                                               .add(uid);
 
                                           await FirebaseFirestore.instance
                                               .collection('bitkiler')
                                               .doc(bitki.id)
-                                              .update(bitki.toJson());
+                                              .update({
+                                            'resimler[${resimIndex - 1}].sikayetler':
+                                                FieldValue.arrayUnion([uid])
+                                          });
 
                                           Fluttertoast.showToast(
                                               msg:

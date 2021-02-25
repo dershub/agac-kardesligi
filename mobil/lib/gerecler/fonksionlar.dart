@@ -22,7 +22,10 @@ Future<Map> checkUser(String uid) async {
         .get();
 
     if (dsUser.exists) {
-      await userBox.put(uid, dsUser.data());
+      await userBox.put(
+          uid,
+          dsUser.data().map((key, value) =>
+              MapEntry(key, value is Timestamp ? value.toDate() : value)));
 
       userMap = dsUser.data();
     } else
