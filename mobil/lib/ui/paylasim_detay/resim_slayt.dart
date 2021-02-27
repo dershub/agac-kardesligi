@@ -11,8 +11,10 @@ import '../../modeller/bitki.dart';
 
 class ResimSlayt extends StatelessWidget {
   final Bitki bitki;
+  final bool bitkiSahibi;
 
-  const ResimSlayt({Key key, @required this.bitki}) : super(key: key);
+  const ResimSlayt({Key key, @required this.bitki, @required this.bitkiSahibi})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +224,7 @@ class ResimSlayt extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () async {
+                                          // TODO: resmi ekleyen kişi şikayet değil direk resmi kaldırma işlemi yapacak
                                           bitki.resimler[resimIndex - 1]
                                               .sikayetler
                                               .add(uid);
@@ -230,9 +233,12 @@ class ResimSlayt extends StatelessWidget {
                                               .collection('bitkiler')
                                               .doc(bitki.id)
                                               .update({
-                                            'resimler[${resimIndex - 1}].sikayetler':
-                                                FieldValue.arrayUnion([uid])
+                                            'resimler.${resimIndex - 1}.sikayetler':
+                                                FieldValue.arrayUnion([uid]),
                                           });
+
+                                          /*  'resimler.${resimIndex - 1}.sikayetler':
+                                                FieldValue.arrayUnion([uid]) */
 
                                           Fluttertoast.showToast(
                                               msg:

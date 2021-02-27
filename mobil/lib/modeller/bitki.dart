@@ -62,7 +62,9 @@ class Bitki {
     this.isim = jsonData['isim'];
     this.evre = jsonData['evre'];
     this.ekleyen = jsonData['ekleyen'];
-    this.resimler = (jsonData['resimler'] ?? [])
+    this.resimler = (jsonData['resimler'] ?? {})
+        .values
+        .toList()
         .cast<Map>()
         .map((e) => Resim.fromJson(e))
         .toList()

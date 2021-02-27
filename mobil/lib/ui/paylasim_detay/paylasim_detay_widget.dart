@@ -57,7 +57,13 @@ class PaylasimDetayWidget extends StatelessWidget {
       await FirebaseFirestore.instance
           .collection('bitkiler')
           .doc(bitki.id)
-          .update(bitki.toJson());
+          .update({
+        'resimler': bitki.resimler
+            .map((e) => e.toJson())
+            .toList()
+            .asMap()
+            .map((key, value) => MapEntry(key.toString(), value)),
+      });
 
       mesaj = "İşlem başarıyla gerçekleşti";
     }
@@ -96,7 +102,7 @@ class PaylasimDetayWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ListView(
               children: [
-                ResimSlayt(bitki: bitki),
+                ResimSlayt(bitki: bitki, bitkiSahibi: bitkiSahibi),
                 SizedBox(height: 8),
                 Text(
                   bitki.baslik,
@@ -124,50 +130,50 @@ class PaylasimDetayWidget extends StatelessWidget {
                     padding: EdgeInsets.all(8),
                     alignment: Alignment.center,
                     child: ValueListenableBuilder<double>(
-                        valueListenable: _yuklemeOraniHaberci,
-                        builder: (_, yuklemeOrani, __) {
-                          if (yuklemeOrani > 0 && yuklemeOrani < 0.99)
-                            return CircularProgressIndicator();
-                          else
-                            return Row(
-                              children: [
-                                SizedBox(
-                                  height: 84,
-                                  child: ResimEkle(
-                                    resimDegisti: (resim) =>
-                                        _resimHaberci.value = resim,
-                                  ),
+                      valueListenable: _yuklemeOraniHaberci,
+                      builder: (_, yuklemeOrani, __) {
+                        if (yuklemeOrani > 0 && yuklemeOrani < 0.99)
+                          return CircularProgressIndicator();
+                        else
+                          return Row(
+                            children: [
+                              SizedBox(
+                                height: 84,
+                                child: ResimEkle(
+                                  resimDegisti: (resim) =>
+                                      _resimHaberci.value = resim,
                                 ),
-                                SizedBox(width: 4),
-                                Expanded(
-                                  child: TextField(
-                                    maxLines: 5,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: "Açıklama (isteğe bağlı)",
-                                    ),
-                                    onChanged: (d) =>
-                                        _aciklamaHaberci.value = d,
+                              ),
+                              SizedBox(width: 4),
+                              Expanded(
+                                child: TextField(
+                                  maxLines: 5,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: "Açıklama (isteğe bağlı)",
                                   ),
+                                  onChanged: (d) => _aciklamaHaberci.value = d,
                                 ),
-                                SizedBox(width: 4),
-                                SizedBox(
-                                  height: 84,
-                                  child: Center(
-                                    child: ClipOval(
-                                      child: Card(
-                                        margin: EdgeInsets.zero,
-                                        child: IconButton(
-                                          icon: Icon(Icons.send),
-                                          onPressed: _resimEkle,
-                                        ),
+                              ),
+                              SizedBox(width: 4),
+                              SizedBox(
+                                height: 84,
+                                child: Center(
+                                  child: ClipOval(
+                                    child: Card(
+                                      margin: EdgeInsets.zero,
+                                      child: IconButton(
+                                        icon: Icon(Icons.send),
+                                        onPressed: _resimEkle,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            );
-                        }),
+                              ),
+                            ],
+                          );
+                      },
+                    ),
                   ),
               ],
             ),
