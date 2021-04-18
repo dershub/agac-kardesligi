@@ -39,7 +39,7 @@ class _MainSayfaState extends State<MainSayfa> {
       case 0:
         return Anasayfa();
       case 1:
-        return BitkiEkle();
+        return FirebaseAuth.instance.currentUser.isAnonymous ? GirisYap() : BitkiEkle();
       case 2:
         return Anasayfa();
       case 3:
